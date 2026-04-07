@@ -9,55 +9,82 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        /* Cor de fundo principal mais suave e moderna */
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #1e293b; }
         .font-serif { font-family: 'Playfair Display', serif; }
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .tab-pill { transition: all 0.2s ease; white-space: nowrap; border: 1px solid #e2e8f0; }
-        .tab-pill.active { background-color: #b91c1c; color: white; border-color: #b91c1c; box-shadow: 0 4px 6px -1px rgba(185, 28, 28, 0.2); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        .card-t2 { border-left: 5px solid #b91c1c; }
-        .card-t1 { border-left: 5px solid #1d4ed8; }
-        .card-formacao { border-left: 5px solid #d97706; }
+        .view-section { display: none; animation: slideUp 0.3s ease-out; }
+        .view-section.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Cards do menu com cores sutis para identificar as seções */
+        .menu-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid rgba(255,255,255,0.5); }
+        .menu-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.1); }
+
+        .card-t2 { border-left: 5px solid #b91c1c; background-color: #ffffff; }
+        .card-t1 { border-left: 5px solid #1d4ed8; background-color: #ffffff; }
+        .card-formacao { border-left: 5px solid #d97706; background-color: #ffffff; }
         
         .label-t2 { background-color: #fef2f2; color: #b91c1c; }
         .label-t1 { background-color: #eff6ff; color: #1d4ed8; }
         .label-formacao { background-color: #fffbeb; color: #d97706; }
     </style>
 </head>
-<body class="pb-20">
+<body class="pb-10">
 
-    <header class="bg-white pt-8 pb-4 px-4 text-center">
-        <h1 class="font-serif text-3xl text-slate-900 mb-1">Kadosh</h1>
-        <p class="text-red-700 font-medium tracking-wide text-xs uppercase">Célula Comunitária consagrados T1 e T2 - 2026</p>
+    <header class="pt-12 pb-10 px-4 text-center">
+        <h1 class="font-serif text-4xl text-slate-900 mb-2">Célula Comunitária Kadosh</h1>
+        <p class="text-red-700 font-bold tracking-[0.2em] text-[10px] uppercase">Consagrados T1 e T2 - 2026</p>
     </header>
 
-    <nav class="sticky top-0 bg-white/80 backdrop-blur-md z-50 py-4 border-b border-slate-100">
-        <div class="max-w-4xl mx-auto px-4 flex gap-2 overflow-x-auto no-scrollbar justify-start md:justify-center">
-            <button onclick="switchTab('t2')" id="btn-t2" class="tab-pill active px-5 py-2 rounded-full text-sm font-semibold bg-white text-slate-600">T2</button>
-            <button onclick="switchTab('t1')" id="btn-t1" class="tab-pill px-5 py-2 rounded-full text-sm font-semibold bg-white text-slate-600">T1</button>
-            <button onclick="switchTab('formadoras')" id="btn-formadoras" class="tab-pill px-5 py-2 rounded-full text-sm font-semibold bg-white text-slate-600">Formação</button>
-            <button onclick="switchTab('celebrações')" id="btn-celebrações" class="tab-pill px-5 py-2 rounded-full text-sm font-semibold bg-white text-slate-600">🎉 Celebrações</button>
-        </div>
-    </nav>
-
-    <main class="max-w-4xl mx-auto p-4 mt-4">
-        <section id="tab-t2" class="tab-content active"><div id="grid-t2" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div></section>
-        <section id="tab-t1" class="tab-content"><div id="grid-t1" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div></section>
-        <section id="tab-formadoras" class="tab-content"><div id="grid-formadoras" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div></section>
+    <main class="max-w-5xl mx-auto p-6">
         
-        <section id="tab-celebrações" class="tab-content">
-            <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
-                <div class="flex justify-between items-center mb-8 bg-slate-50 p-2 rounded-2xl">
-                    <button onclick="mudarMes(-1)" class="w-10 h-10 flex items-center justify-center hover:bg-white rounded-xl shadow-sm transition-all">❮</button>
-                    <h2 id="titulo-mes" class="font-serif text-xl text-slate-900 capitalize">Mês</h2>
-                    <button onclick="mudarMes(1)" class="w-10 h-10 flex items-center justify-center hover:bg-white rounded-xl shadow-sm transition-all">❯</button>
+        <div id="main-menu" class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+            <div onclick="showView('celebracoes')" class="menu-card bg-rose-50 p-8 rounded-[2rem] text-center shadow-sm">
+                <span class="text-4xl block mb-3">🎉</span>
+                <span class="text-[11px] font-black uppercase tracking-tighter text-rose-700">Celebrações</span>
+            </div>
+            <div onclick="showView('formadoras')" class="menu-card bg-amber-50 p-8 rounded-[2rem] text-center shadow-sm">
+                <span class="text-4xl block mb-3">🛡️</span>
+                <span class="text-[11px] font-black uppercase tracking-tighter text-amber-700">Formadoras</span>
+            </div>
+            <div onclick="showView('t2')" class="menu-card bg-red-50 p-8 rounded-[2rem] text-center shadow-sm">
+                <span class="text-4xl block mb-3">📕</span>
+                <span class="text-[11px] font-black uppercase tracking-tighter text-red-800">Consagrados - T2</span>
+            </div>
+            <div onclick="showView('t1')" class="menu-card bg-blue-50 p-8 rounded-[2rem] text-center shadow-sm">
+                <span class="text-4xl block mb-3">📘</span>
+                <span class="text-[11px] font-black uppercase tracking-tighter text-blue-800">Consagrados - T1</span>
+            </div>
+        </div>
+
+        <button id="btn-voltar" onclick="showView('menu')" class="hidden mb-8 flex items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors font-black text-xs tracking-widest">
+            <span class="bg-white w-8 h-8 flex items-center justify-center rounded-full shadow-sm">⇠</span> VOLTAR AO MENU
+        </button>
+
+        <section id="view-celebracoes" class="view-section">
+            <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-white p-8">
+                <div class="flex justify-between items-center mb-8 bg-slate-100/50 p-3 rounded-2xl">
+                    <button onclick="mudarMes(-1)" class="w-10 h-10 flex items-center justify-center bg-white hover:bg-red-50 rounded-xl shadow-sm transition-all text-slate-600">❮</button>
+                    <h2 id="titulo-mes" class="font-serif text-2xl text-slate-900 capitalize">Mês</h2>
+                    <button onclick="mudarMes(1)" class="w-10 h-10 flex items-center justify-center bg-white hover:bg-red-50 rounded-xl shadow-sm transition-all text-slate-600">❯</button>
                 </div>
-                <div class="grid grid-cols-1 gap-8" id="lista-eventos"></div>
+                <div id="lista-eventos" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
             </div>
         </section>
+
+        <section id="view-formadoras" class="view-section">
+            <div id="grid-formadoras" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <section id="view-t2" class="view-section">
+            <div id="grid-t2" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <section id="view-t1" class="view-section">
+            <div id="grid-t1" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
     </main>
 
 <script>
@@ -177,6 +204,25 @@
         return `${partes[2]}/${partes[1]}/${partes[0]}`;
     }
 
+    function showView(view) {
+        document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+        const menu = document.getElementById('main-menu');
+        const btnVoltar = document.getElementById('btn-voltar');
+
+        if (view === 'menu') {
+            menu.classList.remove('hidden');
+            menu.classList.add('grid');
+            btnVoltar.classList.add('hidden');
+        } else {
+            menu.classList.remove('grid');
+            menu.classList.add('hidden');
+            btnVoltar.classList.remove('hidden');
+            document.getElementById('view-' + view).classList.add('active');
+            if(view === 'celebracoes') renderCelebracoes();
+        }
+        window.scrollTo(0,0);
+    }
+
     function createCard(p) {
         let cardClass = 'card-t1';
         let labelClass = 'label-t1';
@@ -191,40 +237,36 @@
         }
 
         const filhosHtml = p.filhos.length > 0 
-            ? `<div class="mt-3 p-2 bg-slate-50 rounded-xl border border-slate-100"><p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Filhos:</p>
-               ${p.filhos.map(f => `<p class="text-xs text-slate-600 font-medium">• ${f.nome} (${formatarDataExibicao(f.nasc)})</p>`).join('')}</div>` : '';
+            ? `<div class="mt-4 p-3 bg-slate-50 rounded-2xl border border-slate-100"><p class="text-[9px] font-black text-slate-400 uppercase mb-2">Filhos:</p>
+               ${p.filhos.map(f => `<p class="text-[11px] text-slate-700 font-semibold mb-1">👶 ${f.nome} <span class="font-normal opacity-60">(${formatarDataExibicao(f.nasc)})</span></p>`).join('')}</div>` : '';
 
         const conjugeHtml = p.conjuge 
-            ? `<div class="mt-3 p-2 bg-slate-100 rounded-xl border border-slate-200"><p class="text-[10px] font-bold text-slate-500 uppercase mb-1">Cônjuge:</p>
-               <p class="text-xs text-slate-900 font-bold">${p.conjuge.nome} <span class="font-normal text-slate-600">(${formatarDataExibicao(p.conjuge.nasc)})</span></p></div>` : '';
+            ? `<div class="mt-4 p-3 bg-slate-100/50 rounded-2xl border border-slate-200"><p class="text-[9px] font-black text-slate-500 uppercase mb-2">Cônjuge:</p>
+               <p class="text-[11px] text-slate-900 font-bold">💍 ${p.conjuge.nome} <span class="font-normal text-slate-600">(${formatarDataExibicao(p.conjuge.nasc)})</span></p></div>` : '';
 
         return `
-            <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex flex-col h-full ${cardClass}">
-                <div class="mb-4 flex justify-between items-start">
-                    <div class="pr-2">
-                        <h3 class="font-bold text-slate-900 leading-tight text-lg">${p.nome}</h3>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase mt-1">Ministério: <span class="text-slate-600">${p.ministerio}</span></p>
-                    </div>
-                    <span class="px-3 py-1 rounded-full text-[10px] font-black tracking-tighter ${labelClass}">${displayNivel}</span>
+            <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-white flex flex-col h-full ${cardClass}">
+                <div class="mb-5 flex justify-between items-start gap-3">
+                    <h3 class="font-bold text-slate-900 leading-tight text-base tracking-tight">${p.nome}</h3>
+                    <span class="px-2 py-1 rounded-lg text-[8px] font-black tracking-widest ${labelClass} flex-shrink-0">${displayNivel}</span>
                 </div>
-                <div class="space-y-2 flex-grow">
-                    <div class="flex items-start gap-2"><span class="text-sm">📧</span> <p class="text-xs text-slate-600 break-all">${p.email}</p></div>
-                    <div class="flex items-start gap-2"><span class="text-sm">📍</span> <p class="text-xs text-slate-600 leading-relaxed">${p.end}</p></div>
-                    <div class="flex items-start gap-3 mt-4 pt-3 border-t border-slate-50">
-                        <div><p class="text-[9px] font-bold text-slate-400 uppercase">Nascimento</p><p class="text-xs font-bold text-slate-700">${formatarDataExibicao(p.nasc)}</p></div>
-                        ${p.casam !== '-' ? `<div><p class="text-[9px] font-bold text-slate-400 uppercase">Casamento</p><p class="text-xs font-bold text-slate-700">${formatarDataExibicao(p.casam)}</p></div>` : ''}
+                <div class="space-y-3 flex-grow">
+                    <div class="flex items-start gap-3"><span class="text-xs opacity-50">📍</span> <p class="text-[11px] text-slate-500 leading-relaxed">${p.end}</p></div>
+                    <div class="flex items-start gap-6 mt-4 pt-4 border-t border-slate-50">
+                        <div><p class="text-[8px] font-black text-slate-400 uppercase mb-1">Nascimento</p><p class="text-[11px] font-bold text-slate-700">${formatarDataExibicao(p.nasc)}</p></div>
+                        ${p.casam !== '-' ? `<div><p class="text-[8px] font-black text-slate-400 uppercase mb-1">Casamento</p><p class="text-[11px] font-bold text-slate-700">${formatarDataExibicao(p.casam)}</p></div>` : ''}
                     </div>
                 </div>
                 ${conjugeHtml}${filhosHtml}
-                <div class="mt-5 p-3 rounded-2xl border ${fpBg} flex items-center justify-between">
-                    <div><p class="text-[9px] font-black uppercase tracking-widest opacity-70">Formador Pessoal (FP)</p><p class="text-sm font-bold">${p.fp}</p></div>
-                    <span class="text-lg opacity-40">🛡️</span>
+                <div class="mt-6 p-4 rounded-2xl border ${fpBg} flex items-center justify-between">
+                    <div><p class="text-[8px] font-black uppercase tracking-[0.15em] opacity-60">Formador Pessoal</p><p class="text-xs font-bold">${p.fp}</p></div>
+                    <span class="text-lg opacity-20">🛡️</span>
                 </div>
             </div>
         `;
     }
 
-    function renderCelebrações() {
+    function renderCelebracoes() {
         document.getElementById('titulo-mes').innerText = meses[mesAtual];
         const container = document.getElementById('lista-eventos');
         container.innerHTML = '';
@@ -237,7 +279,7 @@
             const mN = parseInt(p.nasc.split('-')[1]);
             const dN = parseInt(p.nasc.split('-')[2]);
             if (mN === (mesAtual + 1) && !nomesJaAdicionados.has(p.nome)) {
-                nivers.push({ dia: dN, nome: p.nome, desc: 'Célula' }); // Alterado de "Membro" para "Célula"
+                nivers.push({ dia: dN, nome: p.nome, desc: 'Célula' });
                 nomesJaAdicionados.add(p.nome);
             }
 
@@ -279,45 +321,37 @@
 
         let html = '';
         if (nivers.length > 0) {
-            html += `<div><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">🎂 Aniversariantes</p><div class="space-y-2">`;
+            html += `<div><p class="text-[10px] font-black text-slate-400 uppercase mb-5 tracking-widest px-2">🎂 Aniversários</p><div class="space-y-3">`;
             nivers.forEach(n => {
-                html += `<div class="flex justify-between items-center p-4 bg-red-50 rounded-2xl border border-red-100">
-                    <div><p class="text-sm font-bold text-slate-800">${n.nome}</p><p class="text-[10px] text-red-600 font-bold uppercase">${n.desc}</p></div>
-                    <span class="bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-black">Dia ${n.dia}</span>
+                html += `<div class="flex justify-between items-center p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div><p class="text-sm font-bold text-slate-800">${n.nome}</p><p class="text-[10px] text-red-600 font-bold uppercase tracking-tight">${n.desc}</p></div>
+                    <span class="bg-red-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black shadow-lg shadow-red-200">Dia ${n.dia}</span>
                 </div>`;
             });
             html += `</div></div>`;
         }
 
         if (casamentos.length > 0) {
-            html += `<div class="mt-4"><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">💍 Casamentos</p><div class="space-y-2">`;
+            html += `<div><p class="text-[10px] font-black text-slate-400 uppercase mb-5 tracking-widest px-2">💍 Uniões</p><div class="space-y-3">`;
             casamentos.forEach(c => {
-                html += `<div class="flex justify-between items-center p-4 bg-blue-50 rounded-2xl border border-blue-100">
+                html += `<div class="flex justify-between items-center p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
                     <p class="text-sm font-bold text-slate-800">${c.nome}</p>
-                    <span class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-black">Dia ${c.dia}</span>
+                    <span class="bg-blue-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black shadow-lg shadow-blue-200">Dia ${c.dia}</span>
                 </div>`;
             });
             html += `</div></div>`;
         }
 
-        container.innerHTML = html || '<p class="text-center text-slate-400 text-sm py-10">Nenhuma celebração este mês.</p>';
+        container.innerHTML = html || '<p class="text-center text-slate-400 text-sm py-12 col-span-2">Sem eventos para este mês.</p>';
     }
 
-    function switchTab(tab) {
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
-        document.getElementById('tab-' + tab).classList.add('active');
-        document.getElementById('btn-' + tab).classList.add('active');
-        if(tab === 'celebrações') renderCelebrações();
-    }
-
-    function mudarMes(delta) { mesAtual = (mesAtual + delta + 12) % 12; renderCelebrações(); }
+    function mudarMes(delta) { mesAtual = (mesAtual + delta + 12) % 12; renderCelebracoes(); }
 
     window.onload = () => {
         document.getElementById('grid-t2').innerHTML = membros.filter(m => m.nivel === 'T2').map(createCard).join('');
         document.getElementById('grid-t1').innerHTML = membros.filter(m => m.nivel === 'T1').map(createCard).join('');
         document.getElementById('grid-formadoras').innerHTML = membros.filter(m => m.nivel === 'Formação').map(createCard).join('');
-        renderCelebrações();
+        renderCelebracoes();
     };
 </script>
 </body>
