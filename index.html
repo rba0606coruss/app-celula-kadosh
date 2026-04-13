@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style>
-        /* Cor de fundo principal mais suave e moderna */
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #1e293b; }
         .font-serif { font-family: 'Playfair Display', serif; }
         
@@ -17,7 +16,6 @@
         .view-section.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Cards do menu com cores sutis para identificar as seções */
         .menu-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid rgba(255,255,255,0.5); }
         .menu-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.1); }
 
@@ -28,9 +26,25 @@
         .label-t2 { background-color: #fef2f2; color: #b91c1c; }
         .label-t1 { background-color: #eff6ff; color: #1d4ed8; }
         .label-formacao { background-color: #fffbeb; color: #d97706; }
+
+        #alerta-hoje { display: none; }
+        .banner-alerta { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.95; } }
     </style>
 </head>
 <body class="pb-10">
+
+    <div id="alerta-hoje" class="bg-red-600 text-white p-4 shadow-lg banner-alerta relative">
+        <div class="max-w-5xl mx-auto flex items-center justify-center gap-4 pr-8 text-center">
+            <span class="text-3xl">🎉</span>
+            <div class="text-left">
+                <p class="text-[10px] font-black uppercase tracking-widest opacity-80">Hoje é dia de festa!</p>
+                <div id="detalhes-alerta" class="space-y-1"></div>
+            </div>
+            <span class="text-3xl">🎂</span>
+        </div>
+        <button onclick="document.getElementById('alerta-hoje').style.display='none'" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all">✕</button>
+    </div>
 
     <header class="pt-12 pb-10 px-4 text-center">
         <h1 class="font-serif text-4xl text-slate-900 mb-2">Célula Comunitária Kadosh</h1>
@@ -40,21 +54,37 @@
     <main class="max-w-5xl mx-auto p-6">
         
         <div id="main-menu" class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-            <div onclick="showView('celebracoes')" class="menu-card bg-rose-50 p-8 rounded-[2rem] text-center shadow-sm">
-                <span class="text-4xl block mb-3">🎉</span>
-                <span class="text-[11px] font-black uppercase tracking-tighter text-rose-700">Celebrações</span>
+            <div onclick="showView('celebracoes')" class="menu-card bg-rose-50 p-6 rounded-[2rem] text-center shadow-sm">
+                <span class="text-3xl block mb-2">🎂</span>
+                <span class="text-[10px] font-black uppercase tracking-tighter text-rose-700">Aniversariantes</span>
             </div>
-            <div onclick="showView('formadoras')" class="menu-card bg-amber-50 p-8 rounded-[2rem] text-center shadow-sm">
-                <span class="text-4xl block mb-3">🛡️</span>
-                <span class="text-[11px] font-black uppercase tracking-tighter text-amber-700">Formadoras</span>
+            <div onclick="showView('formadoras')" class="menu-card bg-amber-50 p-6 rounded-[2rem] text-center shadow-sm">
+                <span class="text-3xl block mb-2">🐑</span>
+                <span class="text-[10px] font-black uppercase tracking-tighter text-amber-700">Formadoras</span>
             </div>
-            <div onclick="showView('t2')" class="menu-card bg-red-50 p-8 rounded-[2rem] text-center shadow-sm">
-                <span class="text-4xl block mb-3">📕</span>
-                <span class="text-[11px] font-black uppercase tracking-tighter text-red-800">Consagrados - T2</span>
+            <div onclick="showView('t2')" class="menu-card bg-red-50 p-6 rounded-[2rem] text-center shadow-sm">
+                <span class="text-3xl block mb-2">🕯️</span>
+                <span class="text-[10px] font-black uppercase tracking-tighter text-red-800">Consagrados T2</span>
             </div>
-            <div onclick="showView('t1')" class="menu-card bg-blue-50 p-8 rounded-[2rem] text-center shadow-sm">
-                <span class="text-4xl block mb-3">📘</span>
-                <span class="text-[11px] font-black uppercase tracking-tighter text-blue-800">Consagrados - T1</span>
+            <div onclick="showView('t1')" class="menu-card bg-blue-50 p-6 rounded-[2rem] text-center shadow-sm">
+                <span class="text-3xl block mb-2">🕊️</span>
+                <span class="text-[10px] font-black uppercase tracking-tighter text-blue-800">Consagrados T1</span>
+            </div>
+            <div onclick="showView('partilhas')" class="menu-card bg-emerald-50 p-6 rounded-[2rem] text-center shadow-sm">
+                <span class="text-3xl block mb-2">👥</span>
+                <span class="text-[10px] font-black uppercase tracking-tighter text-emerald-800">Grupos de Partilha</span>
+            </div>
+            <div onclick="showView('servicos')" class="menu-card bg-purple-50 p-6 rounded-[2rem] text-center shadow-sm">
+                <span class="text-3xl block mb-2">🤝</span>
+                <span class="text-[10px] font-black uppercase tracking-tighter text-purple-800">Serviços</span>
+            </div>
+            <div onclick="showView('comunitaria')" class="menu-card bg-orange-50 p-6 rounded-[2rem] text-center shadow-sm">
+                <span class="text-3xl block mb-2">📜</span>
+                <span class="text-[10px] font-black uppercase tracking-tighter text-orange-800">Form. Comunitária</span>
+            </div>
+            <div onclick="showView('vigilias')" class="menu-card bg-slate-100 p-6 rounded-[2rem] text-center shadow-sm">
+                <span class="text-3xl block mb-2">🛐</span>
+                <span class="text-[10px] font-black uppercase tracking-tighter text-slate-800">Vigílias</span>
             </div>
         </div>
 
@@ -73,23 +103,70 @@
             </div>
         </section>
 
-        <section id="view-formadoras" class="view-section">
-            <div id="grid-formadoras" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <section id="view-formadoras" class="view-section"><div id="grid-formadoras" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></section>
+        <section id="view-t2" class="view-section"><div id="grid-t2" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></section>
+        <section id="view-t1" class="view-section"><div id="grid-t1" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></section>
+
+        <section id="view-partilhas" class="view-section">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border-l-4 border-emerald-500"><h3 class="font-black text-emerald-800 text-xs mb-4 uppercase tracking-widest">Grupo A</h3><p class="text-sm font-bold mb-1">Marlene (Coord.)</p><p class="text-xs text-slate-500 leading-loose">Cynthia, Fernanda, Mari e Grazi</p></div>
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border-l-4 border-emerald-500"><h3 class="font-black text-emerald-800 text-xs mb-4 uppercase tracking-widest">Grupo B</h3><p class="text-sm font-bold mb-1">Laura (Coord.)</p><p class="text-xs text-slate-500 leading-loose">Lara, Bia, Iraneide, Tamara, Valéria</p></div>
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border-l-4 border-emerald-500"><h3 class="font-black text-emerald-800 text-xs mb-4 uppercase tracking-widest">Grupo C</h3><p class="text-sm font-bold mb-1">Vinicius (Coord.)</p><p class="text-xs text-slate-500 leading-loose">Matheus, Filipe, Frank, Odilon, Rêmulo, Bianklin e Igor</p></div>
+            </div>
         </section>
 
-        <section id="view-t2" class="view-section">
-            <div id="grid-t2" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <section id="view-servicos" class="view-section">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border-l-4 border-purple-500 flex items-center gap-4">
+                    <div class="bg-purple-50 p-3 rounded-2xl">🤝</div>
+                    <div><h3 class="font-black text-purple-800 text-[10px] uppercase tracking-widest">Fraternidade</h3><p class="text-sm font-bold text-slate-700">Marlene e Filipe</p></div>
+                </div>
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border-l-4 border-purple-500 flex items-center gap-4">
+                    <div class="bg-purple-50 p-3 rounded-2xl">🕯️</div>
+                    <div><h3 class="font-black text-purple-800 text-[10px] uppercase tracking-widest">Liturgia (Simbólica)</h3><p class="text-sm font-bold text-slate-700">Grazi e Odilon</p></div>
+                </div>
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border-l-4 border-purple-500 flex items-center gap-4">
+                    <div class="bg-purple-50 p-3 rounded-2xl">🎥</div>
+                    <div><h3 class="font-black text-purple-800 text-[10px] uppercase tracking-widest">Audiovisual</h3><p class="text-sm font-bold text-slate-700">Bianklin e Frank</p></div>
+                </div>
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border-l-4 border-purple-500 flex items-center gap-4">
+                    <div class="bg-purple-50 p-3 rounded-2xl">🎸</div>
+                    <div><h3 class="font-black text-purple-800 text-[10px] uppercase tracking-widest">Música</h3><p class="text-sm font-bold text-slate-700">Violeiros (revezando)</p></div>
+                </div>
+            </div>
         </section>
 
-        <section id="view-t1" class="view-section">
-            <div id="grid-t1" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <section id="view-comunitaria" class="view-section">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border-l-4 border-orange-500">
+                    <div class="flex items-center gap-2 mb-4"><span class="text-orange-600 font-black text-xs">FORMADORA:</span><h3 class="font-bold text-slate-900">Valéria</h3></div>
+                    <p class="text-xs text-slate-500 leading-loose">Bianklin, Cynthia, Fernanda, Igor, Mari, Marlene, Odilon, Rêmulo e Tamara.</p>
+                </div>
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border-l-4 border-orange-500">
+                    <div class="flex items-center gap-2 mb-4"><span class="text-orange-600 font-black text-xs">ASSISTENTE:</span><h3 class="font-bold text-slate-900">Fernanda</h3></div>
+                    <p class="text-xs text-slate-500 leading-loose">Beatriz, Filipe, Frank, Grazi, Iraneide, Lara, Laura, Matheus e Vinicius</p>
+                </div>
+            </div>
         </section>
 
+        <section id="view-vigilias" class="view-section">
+            <div class="space-y-6 text-center">
+                <div class="bg-white p-12 rounded-[2.5rem] shadow-sm border border-dashed border-slate-300">
+                    <span class="text-4xl block mb-4">🛐</span>
+                    <h2 class="font-serif text-2xl text-slate-800">Escala da Célula</h2>
+                    <div class="mt-4 bg-amber-50 border border-amber-100 p-4 rounded-2xl inline-block">
+                        <p class="text-amber-700 font-bold text-xs uppercase tracking-widest">⚠️ Em Atualização</p>
+                        <p class="text-slate-500 text-[11px] mt-1 italic">Aguarde a nova escala oficial da Célula Kadosh.</p>
+                    </div>
+                </div>
+                <a href="https://vigiliash.web.app/app/pages/home.html?t=YzJoaGJHOXRYMkp5WVhOcGJHbGg7CgkJCVUyaGhiRzl0SUVKeVlYUHRiR2xoOwoJCQliV2x6YzJGdg==" target="_blank" class="inline-flex items-center gap-3 bg-red-700 text-white px-8 py-4 rounded-2xl font-bold text-sm shadow-xl shadow-red-200 hover:bg-red-800 transition-all active:scale-95"><span>Acessar VigíliaSH (Escala Geral)</span><span class="text-lg">↗</span></a>
+            </div>
+        </section>
     </main>
 
 <script>
+    // Membros e lógica de dados (Omitido para brevidade, manter o anterior)
     const membros = [
-        // T2
         { 
             nome: "Cynthia Rodrigues Melo de Almeida", nasc: "1982-07-23", casam: "2008-12-13", nivel: "T2",
             email: "cynthya.mello@gmail.com", end: "Quadra 111 conjunto 8A casa 23", ministerio: "Ministério de Música - coordenação", fp: "Estou sem, no momento",
@@ -140,8 +217,6 @@
             email: "laurassantos1012@gmail.com", end: "QNA 38 casa 30", ministerio: "Pastoreio", fp: "Sem formador",
             conjuge: null, filhos: []
         },
-
-        // T1
         {
             nome: "Vinicius Henrique de Souza Araújo", nasc: "2002-12-15", casam: "-", nivel: "T1",
             email: "viniafad@gmail.com", end: "Rua 28 norte, lote 04 - Águas claras", ministerio: "Sem ministério", fp: "Matheus Tonhá",
@@ -180,8 +255,6 @@
             email: "igorrochash@gmail.com", end: "qn 614 cj d lote 01", ministerio: "Não tenho", fp: "Não tenho",
             conjuge: null, filhos: []
         },
-
-        // FORMAÇÃO
         {
             nome: "Valéria Avelar Mendes Braz", nasc: "1980-09-26", casam: "-", nivel: "Formação",
             email: "valeria.avelarmendes@gmail.com", end: "Rua 08 Sul res. Jales Machado", ministerio: "Ministério de Formação e mesce", fp: "Regina Machado",
@@ -205,144 +278,112 @@
     }
 
     function showView(view) {
+        // Esconde todas as seções
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
         const menu = document.getElementById('main-menu');
         const btnVoltar = document.getElementById('btn-voltar');
 
         if (view === 'menu') {
-            menu.classList.remove('hidden');
-            menu.classList.add('grid');
+            menu.style.display = 'grid';
             btnVoltar.classList.add('hidden');
         } else {
-            menu.classList.remove('grid');
-            menu.classList.add('hidden');
+            menu.style.display = 'none';
             btnVoltar.classList.remove('hidden');
-            document.getElementById('view-' + view).classList.add('active');
+            const target = document.getElementById('view-' + view);
+            if(target) target.classList.add('active');
             if(view === 'celebracoes') renderCelebracoes();
         }
         window.scrollTo(0,0);
     }
 
     function createCard(p) {
-        let cardClass = 'card-t1';
-        let labelClass = 'label-t1';
-        let fpBg = 'bg-blue-50 text-blue-700 border-blue-100';
-        let displayNivel = p.nivel;
-
-        if (p.nivel === 'T2') {
-            cardClass = 'card-t2'; labelClass = 'label-t2'; fpBg = 'bg-red-50 text-red-700 border-red-100';
-        } else if (p.nivel === 'Formação') {
-            cardClass = 'card-formacao'; labelClass = 'label-formacao'; fpBg = 'bg-amber-50 text-amber-700 border-amber-100';
-            displayNivel = p.nome.includes("Fernanda") ? "ASSISTENTE" : "FORMADORA";
-        }
-
-        const filhosHtml = p.filhos.length > 0 
-            ? `<div class="mt-4 p-3 bg-slate-50 rounded-2xl border border-slate-100"><p class="text-[9px] font-black text-slate-400 uppercase mb-2">Filhos:</p>
-               ${p.filhos.map(f => `<p class="text-[11px] text-slate-700 font-semibold mb-1">👶 ${f.nome} <span class="font-normal opacity-60">(${formatarDataExibicao(f.nasc)})</span></p>`).join('')}</div>` : '';
-
-        const conjugeHtml = p.conjuge 
-            ? `<div class="mt-4 p-3 bg-slate-100/50 rounded-2xl border border-slate-200"><p class="text-[9px] font-black text-slate-500 uppercase mb-2">Cônjuge:</p>
-               <p class="text-[11px] text-slate-900 font-bold">💍 ${p.conjuge.nome} <span class="font-normal text-slate-600">(${formatarDataExibicao(p.conjuge.nasc)})</span></p></div>` : '';
-
-        return `
-            <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-white flex flex-col h-full ${cardClass}">
-                <div class="mb-5 flex justify-between items-start gap-3">
-                    <h3 class="font-bold text-slate-900 leading-tight text-base tracking-tight">${p.nome}</h3>
-                    <span class="px-2 py-1 rounded-lg text-[8px] font-black tracking-widest ${labelClass} flex-shrink-0">${displayNivel}</span>
-                </div>
-                <div class="space-y-3 flex-grow">
-                    <div class="flex items-start gap-3"><span class="text-xs opacity-50">📍</span> <p class="text-[11px] text-slate-500 leading-relaxed">${p.end}</p></div>
-                    <div class="flex items-start gap-6 mt-4 pt-4 border-t border-slate-50">
-                        <div><p class="text-[8px] font-black text-slate-400 uppercase mb-1">Nascimento</p><p class="text-[11px] font-bold text-slate-700">${formatarDataExibicao(p.nasc)}</p></div>
-                        ${p.casam !== '-' ? `<div><p class="text-[8px] font-black text-slate-400 uppercase mb-1">Casamento</p><p class="text-[11px] font-bold text-slate-700">${formatarDataExibicao(p.casam)}</p></div>` : ''}
-                    </div>
-                </div>
-                ${conjugeHtml}${filhosHtml}
-                <div class="mt-6 p-4 rounded-2xl border ${fpBg} flex items-center justify-between">
-                    <div><p class="text-[8px] font-black uppercase tracking-[0.15em] opacity-60">Formador Pessoal</p><p class="text-xs font-bold">${p.fp}</p></div>
-                    <span class="text-lg opacity-20">🛡️</span>
-                </div>
-            </div>
-        `;
+        let cardClass = 'card-t1'; let labelClass = 'label-t1'; let fpBg = 'bg-blue-50 text-blue-700'; let displayNivel = p.nivel;
+        if (p.nivel === 'T2') { cardClass = 'card-t2'; labelClass = 'label-t2'; fpBg = 'bg-red-50 text-red-700'; }
+        else if (p.nivel === 'Formação') { cardClass = 'card-formacao'; labelClass = 'label-formacao'; fpBg = 'bg-amber-50 text-amber-700'; displayNivel = p.nome.includes("Fernanda") ? "ASSISTENTE" : "FORMADORA"; }
+        const fHtml = p.filhos.length > 0 ? `<div class="mt-4 p-3 bg-slate-50 rounded-2xl border border-slate-100"><p class="text-[9px] font-black text-slate-400 uppercase mb-2">Filhos:</p>${p.filhos.map(f => `<p class="text-[11px] text-slate-700 font-semibold mb-1">👶 ${f.nome} <span class="font-normal opacity-60">(${formatarDataExibicao(f.nasc)})</span></p>`).join('')}</div>` : '';
+        const cHtml = p.conjuge ? `<div class="mt-4 p-3 bg-slate-100/50 rounded-2xl border border-slate-200"><p class="text-[9px] font-black text-slate-500 uppercase mb-2">Cônjuge:</p><p class="text-[11px] text-slate-900 font-bold">💍 ${p.conjuge.nome} <span class="font-normal text-slate-600">(${formatarDataExibicao(p.conjuge.nasc)})</span></p></div>` : '';
+        return `<div class="bg-white rounded-[2rem] p-6 shadow-sm border border-white flex flex-col h-full ${cardClass}"><div class="mb-5 flex justify-between items-start gap-3"><h3 class="font-bold text-slate-900 leading-tight text-sm tracking-tight">${p.nome}</h3><span class="px-2 py-1 rounded-lg text-[8px] font-black tracking-widest ${labelClass} flex-shrink-0">${displayNivel}</span></div><div class="space-y-3 flex-grow"><div class="flex items-start gap-3"><span class="text-xs opacity-50">📍</span> <p class="text-[10px] text-slate-500 leading-relaxed">${p.end}</p></div><div class="flex items-start gap-6 mt-4 pt-4 border-t border-slate-50"><div><p class="text-[8px] font-black text-slate-400 uppercase mb-1">Nascimento</p><p class="text-[10px] font-bold text-slate-700">${formatarDataExibicao(p.nasc)}</p></div>${p.casam !== '-' ? `<div><p class="text-[8px] font-black text-slate-400 uppercase mb-1">Casamento</p><p class="text-[10px] font-bold text-slate-700">${formatarDataExibicao(p.casam)}</p></div>` : ''}</div></div>${cHtml}${fHtml}<div class="mt-6 p-3 rounded-2xl border bg-slate-50"><p class="text-[8px] font-black uppercase tracking-[0.15em] opacity-60 mb-1">Ministério Atual</p><p class="text-[10px] font-bold text-slate-800">${p.ministerio}</p></div><div class="mt-3 p-4 rounded-2xl border ${fpBg} flex items-center justify-between"><div><p class="text-[8px] font-black uppercase tracking-[0.15em] opacity-60">Formador Pessoal</p><p class="text-xs font-bold">${p.fp}</p></div></div></div>`;
     }
 
     function renderCelebracoes() {
         document.getElementById('titulo-mes').innerText = meses[mesAtual];
         const container = document.getElementById('lista-eventos');
         container.innerHTML = '';
-
-        let nivers = [];
-        let casamentos = [];
-        let nomesJaAdicionados = new Set(); 
+        const nivers = []; const casamentos = []; const niversUnicos = new Set(); const bodasUnicas = new Set();
+        const hoje = new Date(); const diaHoje = hoje.getDate(); const mesHoje = hoje.getMonth() + 1;
+        const niversHojeInfo = [];
 
         membros.forEach(p => {
-            const mN = parseInt(p.nasc.split('-')[1]);
-            const dN = parseInt(p.nasc.split('-')[2]);
-            if (mN === (mesAtual + 1) && !nomesJaAdicionados.has(p.nome)) {
-                nivers.push({ dia: dN, nome: p.nome, desc: 'Célula' });
-                nomesJaAdicionados.add(p.nome);
-            }
-
-            if (p.conjuge) {
-                const mC = parseInt(p.conjuge.nasc.split('-')[1]);
-                const dC = parseInt(p.conjuge.nasc.split('-')[2]);
-                if (mC === (mesAtual + 1) && !nomesJaAdicionados.has(p.conjuge.nome)) {
-                    nivers.push({ dia: dC, nome: p.conjuge.nome, desc: `Cônjuge de ${p.nome.split(' ')[0]}` });
-                    nomesJaAdicionados.add(p.conjuge.nome);
+            const mAlvo = mesAtual + 1;
+            const nData = p.nasc.split('-');
+            if(parseInt(nData[1]) === mAlvo) {
+                const id = `M-${p.nome}-${nData[2]}`;
+                if(!niversUnicos.has(id)) {
+                    nivers.push({ dia: parseInt(nData[2]), nome: p.nome, desc: 'Membro' });
+                    niversUnicos.add(id);
+                    if(parseInt(nData[2]) === diaHoje && mAlvo === mesHoje) niversHojeInfo.push({nome: p.nome, tipo: 'Membro(a)'});
                 }
             }
-
+            if(p.conjuge) {
+                const cData = p.conjuge.nasc.split('-');
+                if(parseInt(cData[1]) === mAlvo) {
+                    const id = `C-${p.conjuge.nome}-${cData[2]}`;
+                    if(!niversUnicos.has(id)) {
+                        nivers.push({ dia: parseInt(cData[2]), nome: p.conjuge.nome, desc: `Cônjuge de ${p.nome.split(' ')[0]}` });
+                        niversUnicos.add(id);
+                        if(parseInt(cData[2]) === diaHoje && mAlvo === mesHoje) niversHojeInfo.push({nome: p.conjuge.nome, tipo: `Cônjuge de ${p.nome.split(' ')[0]}`});
+                    }
+                }
+            }
             p.filhos.forEach(f => {
-                if (f.nasc !== "A caminho") {
-                    const mF = parseInt(f.nasc.split('-')[1]);
-                    const dF = parseInt(f.nasc.split('-')[2]);
-                    if (mF === (mesAtual + 1) && !nomesJaAdicionados.has(f.nome)) {
-                        nivers.push({ dia: dF, nome: f.nome, desc: `Filho(a) de ${p.nome.split(' ')[0]}` });
-                        nomesJaAdicionados.add(f.nome);
+                if(f.nasc && f.nasc.includes('-')) {
+                    const fData = f.nasc.split('-');
+                    if(parseInt(fData[1]) === mAlvo) {
+                        const id = `F-${f.nome}-${fData[2]}`;
+                        if(!niversUnicos.has(id)) {
+                            nivers.push({ dia: parseInt(fData[2]), nome: f.nome, desc: `Filho(a) de ${p.nome.split(' ')[0]}` });
+                            niversUnicos.add(id);
+                            if(parseInt(fData[2]) === diaHoje && mAlvo === mesHoje) niversHojeInfo.push({nome: f.nome, tipo: `Filho(a) de ${p.nome.split(' ')[0]}`});
+                        }
                     }
                 }
             });
-
-            if (p.casam !== '-') {
-                const mCa = parseInt(p.casam.split('-')[1]);
-                const dCa = parseInt(p.casam.split('-')[2]);
-                if (mCa === (mesAtual + 1)) {
-                    const idCasal = [p.nome, p.conjuge?.nome].sort().join('|');
-                    if (!nomesJaAdicionados.has(idCasal)) {
-                        casamentos.push({ dia: dCa, nome: p.conjuge ? `${p.nome.split(' ')[0]} & ${p.conjuge.nome.split(' ')[0]}` : p.nome });
-                        nomesJaAdicionados.add(idCasal);
+            if(p.casam && p.casam !== '-') {
+                const bData = p.casam.split('-');
+                if(parseInt(bData[1]) === mAlvo) {
+                    const idBoda = [p.nome, p.conjuge?.nome].sort().join('|');
+                    if(!bodasUnicas.has(idBoda)) {
+                        casamentos.push({ dia: parseInt(bData[2]), nome: p.conjuge ? `${p.nome.split(' ')[0]} & ${p.conjuge.nome.split(' ')[0]}` : p.nome });
+                        bodasUnicas.add(idBoda);
                     }
                 }
             }
         });
 
-        nivers.sort((a, b) => a.dia - b.dia);
-        casamentos.sort((a, b) => a.dia - b.dia);
+        const alertBox = document.getElementById('alerta-hoje');
+        const detalhes = document.getElementById('detalhes-alerta');
+        if(niversHojeInfo.length > 0) {
+            alertBox.style.display = 'block';
+            detalhes.innerHTML = niversHojeInfo.map(n => `
+                <p class="font-bold text-sm leading-tight">${n.nome} <span class="font-normal opacity-80">(${n.tipo})</span></p>
+                <p class="text-xs italic opacity-90 mt-1 font-medium">Parabéns! Que a Virgem Maria interceda por sua vida e missão hoje e sempre!</p>
+            `).join('<div class="h-2"></div>');
+        } else { alertBox.style.display = 'none'; }
 
+        nivers.sort((a,b) => a.dia - b.dia);
+        casamentos.sort((a,b) => a.dia - b.dia);
         let html = '';
-        if (nivers.length > 0) {
-            html += `<div><p class="text-[10px] font-black text-slate-400 uppercase mb-5 tracking-widest px-2">🎂 Aniversários</p><div class="space-y-3">`;
-            nivers.forEach(n => {
-                html += `<div class="flex justify-between items-center p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                    <div><p class="text-sm font-bold text-slate-800">${n.nome}</p><p class="text-[10px] text-red-600 font-bold uppercase tracking-tight">${n.desc}</p></div>
-                    <span class="bg-red-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black shadow-lg shadow-red-200">Dia ${n.dia}</span>
-                </div>`;
-            });
+        if(nivers.length > 0) {
+            html += `<div class="mb-8"><p class="text-[10px] font-black text-slate-400 uppercase mb-5 tracking-widest px-2">🎂 Aniversários</p><div class="space-y-3">`;
+            nivers.forEach(n => { html += `<div class="flex justify-between items-center p-4 bg-white rounded-2xl border border-slate-100 shadow-sm"><div><p class="text-sm font-bold text-slate-800">${n.nome}</p><p class="text-[10px] text-red-600 font-bold uppercase tracking-tight">${n.desc}</p></div><span class="bg-red-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black">Dia ${n.dia}</span></div>`; });
             html += `</div></div>`;
         }
-
-        if (casamentos.length > 0) {
-            html += `<div><p class="text-[10px] font-black text-slate-400 uppercase mb-5 tracking-widest px-2">💍 Uniões</p><div class="space-y-3">`;
-            casamentos.forEach(c => {
-                html += `<div class="flex justify-between items-center p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                    <p class="text-sm font-bold text-slate-800">${c.nome}</p>
-                    <span class="bg-blue-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black shadow-lg shadow-blue-200">Dia ${c.dia}</span>
-                </div>`;
-            });
+        if(casamentos.length > 0) {
+            html += `<div><p class="text-[10px] font-black text-slate-400 uppercase mb-5 tracking-widest px-2">💍 Bodas</p><div class="space-y-3">`;
+            casamentos.forEach(c => { html += `<div class="flex justify-between items-center p-4 bg-white rounded-2xl border border-slate-100 shadow-sm"><p class="text-sm font-bold text-slate-800">${c.nome}</p><span class="bg-blue-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black">Dia ${c.dia}</span></div>`; });
             html += `</div></div>`;
         }
-
-        container.innerHTML = html || '<p class="text-center text-slate-400 text-sm py-12 col-span-2">Sem eventos para este mês.</p>';
+        container.innerHTML = html || '<p class="text-center text-slate-400 text-sm py-12 col-span-full">Sem celebrações para este mês.</p>';
     }
 
     function mudarMes(delta) { mesAtual = (mesAtual + delta + 12) % 12; renderCelebracoes(); }
