@@ -1,16 +1,11 @@
 {
   "name": "Célula Kadosh 2026",
   "short_name": "Kadosh",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f1f5f9",
   "theme_color": "#b91c1c",
   "icons": [
-    {
-      "src": "Celula.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
     {
       "src": "Celula.png",
       "sizes": "512x512",
