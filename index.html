@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Célula Kadosh - 2026</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#b91c1c">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
@@ -30,6 +34,7 @@
         #alerta-hoje { display: none; }
         .banner-alerta { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.95; } }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="pb-10">
@@ -46,10 +51,16 @@
         <button onclick="document.getElementById('alerta-hoje').style.display='none'" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all">✕</button>
     </div>
 
-    <header class="pt-12 pb-10 px-4 text-center">
+    <header class="pt-12 pb-6 px-4 text-center">
         <h1 class="font-serif text-4xl text-slate-900 mb-2">Célula Comunitária Kadosh</h1>
         <p class="text-red-700 font-bold tracking-[0.2em] text-[10px] uppercase">Consagrados T1 e T2 - 2026</p>
     </header>
+
+    <div id="install-area" class="hidden max-w-5xl mx-auto px-6 mb-8">
+        <button id="btn-instalar" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-[10px] tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl border-b-4 border-slate-700 active:border-b-0 active:translate-y-1 transition-all">
+            <span>📲</span> INSTALAR APLICATIVO NO TELEMÓVEL
+        </button>
+    </div>
 
     <main class="max-w-5xl mx-auto p-6">
         
@@ -150,125 +161,100 @@
         </section>
 
         <section id="view-vigilias" class="view-section">
-            <div class="space-y-6 text-center">
-                <div class="bg-white p-12 rounded-[2.5rem] shadow-sm border border-dashed border-slate-300">
-                    <span class="text-4xl block mb-4">🛐</span>
-                    <h2 class="font-serif text-2xl text-slate-800">Escala da Célula</h2>
-                    <div class="mt-4 bg-amber-50 border border-amber-100 p-4 rounded-2xl inline-block">
-                        <p class="text-amber-700 font-bold text-xs uppercase tracking-widest">⚠️ Em Atualização</p>
-                        <p class="text-slate-500 text-[11px] mt-1 italic">Aguarde a nova escala oficial da Célula Kadosh.</p>
+            <div class="space-y-6">
+                <div class="bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-xl text-center">
+                    <span class="text-4xl block mb-2">🛐</span>
+                    <h2 class="font-serif text-2xl mb-1">Vigília da Célula Kadosh</h2>
+                    <p class="text-red-400 font-black text-[10px] uppercase tracking-[0.2em]">Todo dia 02 de cada mês</p>
+                </div>
+
+                <div class="bg-white rounded-[2rem] p-4 shadow-sm border border-white">
+                    <div class="flex justify-between items-center bg-slate-100/50 p-2 rounded-2xl">
+                        <button onclick="mudarMesVigilia(-1)" class="w-10 h-10 flex items-center justify-center bg-white hover:bg-red-50 rounded-xl shadow-sm transition-all text-slate-600 font-bold">❮</button>
+                        <div class="text-center">
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Escala de</p>
+                            <h2 id="titulo-mes-vigilia" class="font-serif text-xl text-slate-900 capitalize">Mês</h2>
+                        </div>
+                        <button onclick="mudarMesVigilia(1)" class="w-10 h-10 flex items-center justify-center bg-white hover:bg-red-50 rounded-xl shadow-sm transition-all text-slate-600 font-bold">❯</button>
                     </div>
                 </div>
-                <a href="https://vigiliash.web.app/app/pages/home.html?t=YzJoaGJHOXRYMkp5WVhOcGJHbGg7CgkJCVUyaGhiRzl0SUVKeVlYUHRiR2xoOwoJCQliV2x6YzJGdg==" target="_blank" class="inline-flex items-center gap-3 bg-red-700 text-white px-8 py-4 rounded-2xl font-bold text-sm shadow-xl shadow-red-200 hover:bg-red-800 transition-all active:scale-95"><span>Acessar VigíliaSH (Escala Geral)</span><span class="text-lg">↗</span></a>
+
+                <div id="escala-vigilia-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+
+                <div class="bg-amber-50 border border-amber-100 p-6 rounded-[2rem]">
+                    <h3 class="font-black text-amber-800 text-[10px] uppercase tracking-widest mb-4 flex items-center gap-2"><span>⭐</span> Horários Especiais</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-amber-100">
+                            <p class="text-[9px] font-black text-slate-400 uppercase mb-1">3º Sábado (14:30 - 18:30)</p>
+                            <p class="text-sm font-bold text-slate-700">Iraneide e Frank</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-amber-100">
+                            <p class="text-[9px] font-black text-slate-400 uppercase mb-1">1ª Quinta (14:00 - 18:00)</p>
+                            <p class="text-sm font-bold text-slate-700">Marlene</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center pt-4">
+                    <a href="https://vigiliash.web.app/app/pages/home.html?t=YzJoaGJHOXRYMkp5WVhOcGJHbGg7CgkJCVUyaGhiRzl0SUVKeVlYUHRiR2xoOwoJCQliV2x6YzJGdg==" target="_blank" class="bg-slate-200 text-slate-600 px-6 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-slate-300 transition-all inline-block">
+                        Escala Geral no VigíliaSH ↗
+                    </a>
+                </div>
             </div>
         </section>
     </main>
 
 <script>
-    // Membros e lógica de dados (Omitido para brevidade, manter o anterior)
-    const membros = [
-        { 
-            nome: "Cynthia Rodrigues Melo de Almeida", nasc: "1982-07-23", casam: "2008-12-13", nivel: "T2",
-            email: "cynthya.mello@gmail.com", end: "Quadra 111 conjunto 8A casa 23", ministerio: "Ministério de Música - coordenação", fp: "Estou sem, no momento",
-            conjuge: { nome: "Walkner Pinheiro Melo de Almeida", nasc: "1980-08-22" },
-            filhos: [{ nome: "Valentina Melo de Almeida", nasc: "2015-05-10" }, { nome: "Lorenzo Melo de Almeida", nasc: "2016-10-24" }]
-        },
-        {
-            nome: "Iraneide Nunes dos Santos Viana", nasc: "1982-09-03", casam: "2006-06-03", nivel: "T2",
-            email: "viannairaneide03@gmail.com", end: "Qnl 11 conj D casa 9", ministerio: "Sem ministério", fp: "Trindade Madalena",
-            conjuge: { nome: "Frank Viana dos Santos", nasc: "1978-11-21" },
-            filhos: [{ nome: "Chiara", nasc: "2008-12-23" }, { nome: "Heitor", nasc: "2011-05-08" }, { nome: "Marcos", nasc: "2019-04-13" }, { nome: "Isaac", nasc: "2025-04-07" }]
-        },
-        {
-            nome: "Frank Viana dos Santos", nasc: "1978-11-21", casam: "2006-06-03", nivel: "T2",
-            email: "frankviana@email.com", end: "Qnl 11 conj D casa 9", ministerio: "Sem ministério", fp: "Sem formador",
-            conjuge: { nome: "Iraneide Nunes dos Santos Viana", nasc: "1982-09-03" },
-            filhos: [{ nome: "Chiara", nasc: "2008-12-23" }, { nome: "Heitor", nasc: "2011-05-08" }, { nome: "Marcos", nasc: "2019-04-13" }, { nome: "Isaac", nasc: "2025-04-07" }]
-        },
-        {
-            nome: "Tamara Melo de Oliveira", nasc: "1991-02-25", casam: "-", nivel: "T2",
-            email: "tamara.oliveira36@gmail.com", end: "Qd 04 conj D casa 17 cond São Francisco", ministerio: "Centro de formação", fp: "Camila",
-            conjuge: null, filhos: []
-        },
-        {
-            nome: "Lara Dayane Dias de Jesus", nasc: "1997-11-07", casam: "-", nivel: "T2",
-            email: "laradayanemarinha2025@gmail.com", end: "CLN 7, bloco A, Riacho Fundo", ministerio: "Espaço de Paz", fp: "Kelly Soares",
-            conjuge: null, filhos: []
-        },
-        {
-            nome: "Francisco Odilon Farias Junior", nasc: "2001-10-17", casam: "-", nivel: "T2",
-            email: "franciscoodilon18@gmail.com", end: "QR 313 conjunto 2 Samambaia Sul", ministerio: "Pastor de Grupo de oração adulto", fp: "Victor Moreschi",
-            conjuge: null, filhos: []
-        },
-        {
-            nome: "Filipe Rodrigues Azevedo", nasc: "1998-08-10", casam: "2024-09-14", nivel: "T2",
-            email: "filiperazevedo1@gmail.com", end: "QN1 Lote 29, Conjunto 30", ministerio: "Acompanhador vocacional", fp: "Paulo Cesar",
-            conjuge: { nome: "Lorrany Rezende Azevedo", nasc: "1999-04-30" },
-            filhos: [{ nome: "Aurora Rezende Azevedo", nasc: "2025-06-26" }]
-        },
-        {
-            nome: "Matheus da Silva Santos", nasc: "1996-03-21", casam: "2025-10-04", nivel: "T2",
-            email: "matheuss.arq@gmail.com", end: "QN 19 Conj 01 casa 36", ministerio: "Sem ministério", fp: "Sem formador",
-            conjuge: { nome: "Larissa Torres", nasc: "1999-02-05" },
-            filhos: [{ nome: "Maria Tereza", nasc: "2017-02-18" }, { nome: "José Pedro", nasc: "A caminho" }]
-        },
-        {
-            nome: "Laura Silva Santos", nasc: "1995-12-10", casam: "-", nivel: "T2",
-            email: "laurassantos1012@gmail.com", end: "QNA 38 casa 30", ministerio: "Pastoreio", fp: "Sem formador",
-            conjuge: null, filhos: []
-        },
-        {
-            nome: "Vinicius Henrique de Souza Araújo", nasc: "2002-12-15", casam: "-", nivel: "T1",
-            email: "viniafad@gmail.com", end: "Rua 28 norte, lote 04 - Águas claras", ministerio: "Sem ministério", fp: "Matheus Tonhá",
-            conjuge: null, filhos: []
-        },
-        {
-            nome: "Marlene do Nascimento Nunes Silva", nasc: "1972-07-12", casam: "1994-12-10", nivel: "T1",
-            email: "marlene.nsilva3@gmail.com", end: "Qsd 21 casa 6 Taguatinga Sul", ministerio: "Secretaria Comunitária", fp: "Janaina",
-            conjuge: { nome: "Wemerson Pereira Silva", nasc: "1972-04-04" },
-            filhos: [{ nome: "Gabriel Nunes Silva", nasc: "1996-06-21" }, { nome: "João Vitor", nasc: "2000-04-11" }, { nome: "Maria Helena", nasc: "2004-12-27" }, { nome: "Maria Isabel", nasc: "2012-03-25" }]
-        },
-        {
-            nome: "Remulo Corrêa de Araújo", nasc: "1976-05-23", casam: "2018-11-03", nivel: "T1",
-            email: "remulocorrea@gmail.com", end: "Quadra 105 conj F1 ap 41 sol nascente", ministerio: "Primeiro anúncio", fp: "Frederico (fred)",
-            conjuge: { nome: "Mirian Cristine Corrêa Araújo", nasc: "1979-03-29" },
-            filhos: [{ nome: "Suzana Corrêa Araújo", nasc: "2019-11-27" }]
-        },
-        {
-            nome: "Maria Beatriz Araújo Otaviano da Silva", nasc: "2001-11-24", casam: "-", nivel: "T1",
-            email: "maria.beatriz7412@gmail.com", end: "Colônia Agrícola Samambaia Rua 1", ministerio: "Coordenação da comunicação", fp: "Renata Ribas",
-            conjuge: null, filhos: []
-        },
-        {
-            nome: "Bianklin Bessa Rizzi", nasc: "1999-07-17", casam: "2024-12-28", nivel: "T1",
-            email: "bianklinb@gmail.com", end: "CNB 6, Res. Dona Elvira - Ap 602", ministerio: "Acompanhador Vocacional", fp: "Pedro Nonato",
-            conjuge: { nome: "Mirele Mendes Xavier Rizzi", nasc: "2000-11-11" },
-            filhos: [{ nome: "Maria Clara Xavier Rizzi", nasc: "2025-11-26" }]
-        },
-        {
-            nome: "Graziely Sales Palma", nasc: "1983-08-25", casam: "-", nivel: "T1",
-            email: "graziely.palma@gmail.com", end: "QNM 5 CJ J CASA 46 Ceilândia Sul", ministerio: "Promoção humana", fp: "Sem FP",
-            conjuge: null, filhos: []
-        },
-        {
-            nome: "JOSE IGOR ROCHA DE MOURA", nasc: "1996-03-29", casam: "-", nivel: "T1",
-            email: "igorrochash@gmail.com", end: "qn 614 cj d lote 01", ministerio: "Não tenho", fp: "Não tenho",
-            conjuge: null, filhos: []
-        },
-        {
-            nome: "Valéria Avelar Mendes Braz", nasc: "1980-09-26", casam: "-", nivel: "Formação",
-            email: "valeria.avelarmendes@gmail.com", end: "Rua 08 Sul res. Jales Machado", ministerio: "Ministério de Formação e mesce", fp: "Regina Machado",
-            conjuge: null, filhos: [{ nome: "Davi Avelar Mendes Braz", nasc: "2009-04-12" }]
-        },
-        {
-            nome: "Fernanda Vidal da Silva Albuquerque", nasc: "1981-07-15", casam: "2007-11-14", nivel: "Formação",
-            email: "fevidal1507@gmail.com", end: "CNB 06 LOTE 04 BLOCO 1 AP 305", ministerio: "Ministério de Formação - Assistente", fp: "Mônica Feijó",
-            conjuge: { nome: "Rafael de Brito Albuquerque", nasc: "1982-06-06" },
-            filhos: [{ nome: "Mariana Vidal Albuquerque", nasc: "2012-08-20" }]
+    // --- LÓGICA PWA (INSTALAÇÃO) ---
+    let deferredPrompt;
+    const installArea = document.getElementById('install-area');
+    const btnInstalar = document.getElementById('btn-instalar');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installArea.classList.remove('hidden');
+    });
+
+    btnInstalar.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') console.log('PWA Aceito');
+            deferredPrompt = null;
+            installArea.classList.add('hidden');
         }
+    });
+
+    window.addEventListener('appinstalled', () => {
+        installArea.classList.add('hidden');
+        deferredPrompt = null;
+    });
+
+    // --- DADOS E LÓGICA DO APP ---
+    const membros = [
+        { nome: "Cynthia Rodrigues Melo de Almeida", nasc: "1982-07-23", casam: "2008-12-13", nivel: "T2", email: "cynthya.mello@gmail.com", end: "Quadra 111 conjunto 8A casa 23", ministerio: "Ministério de Música - coordenação", fp: "Estou sem, no momento", conjuge: { nome: "Walkner Pinheiro Melo de Almeida", nasc: "1980-08-22" }, filhos: [{ nome: "Valentina Melo de Almeida", nasc: "2015-05-10" }, { nome: "Lorenzo Melo de Almeida", nasc: "2016-10-24" }] },
+        { nome: "Iraneide Nunes dos Santos Viana", nasc: "1982-09-03", casam: "2006-06-03", nivel: "T2", email: "viannairaneide03@gmail.com", end: "Qnl 11 conj D casa 9", ministerio: "Sem ministério", fp: "Trindade Madalena", conjuge: { nome: "Frank Viana dos Santos", nasc: "1978-11-21" }, filhos: [{ nome: "Chiara", nasc: "2008-12-23" }, { nome: "Heitor", nasc: "2011-05-08" }, { nome: "Marcos", nasc: "2019-04-13" }, { nome: "Isaac", nasc: "2025-04-07" }] },
+        { nome: "Frank Viana dos Santos", nasc: "1978-11-21", casam: "2006-06-03", nivel: "T2", email: "frankviana@email.com", end: "Qnl 11 conj D casa 9", ministerio: "Sem ministério", fp: "Sem formador", conjuge: { nome: "Iraneide Nunes dos Santos Viana", nasc: "1982-09-03" }, filhos: [{ nome: "Chiara", nasc: "2008-12-23" }, { nome: "Heitor", nasc: "2011-05-08" }, { nome: "Marcos", nasc: "2019-04-13" }, { nome: "Isaac", nasc: "2025-04-07" }] },
+        { nome: "Tamara Melo de Oliveira", nasc: "1991-02-25", casam: "-", nivel: "T2", email: "tamara.oliveira36@gmail.com", end: "Qd 04 conj D casa 17 cond São Francisco", ministerio: "Centro de formação", fp: "Camila", conjuge: null, filhos: [] },
+        { nome: "Lara Dayane Dias de Jesus", nasc: "1997-11-07", casam: "-", nivel: "T2", email: "laradayanemarinha2025@gmail.com", end: "CLN 7, bloco A, Riacho Fundo", ministerio: "Espaço de Paz", fp: "Kelly Soares", conjuge: null, filhos: [] },
+        { nome: "Francisco Odilon Farias Junior", nasc: "2001-10-17", casam: "-", nivel: "T2", email: "franciscoodilon18@gmail.com", end: "QR 313 conjunto 2 Samambaia Sul", ministerio: "Pastor de Grupo de oração adulto", fp: "Victor Moreschi", conjuge: null, filhos: [] },
+        { nome: "Filipe Rodrigues Azevedo", nasc: "1998-08-10", casam: "2024-09-14", nivel: "T2", email: "filiperazevedo1@gmail.com", end: "QN1 Lote 29, Conjunto 30", ministerio: "Acompanhador vocacional", fp: "Paulo Cesar", conjuge: { nome: "Lorrany Rezende Azevedo", nasc: "1999-04-30" }, filhos: [{ nome: "Aurora Rezende Azevedo", nasc: "2025-06-26" }] },
+        { nome: "Matheus da Silva Santos", nasc: "1996-03-21", casam: "2025-10-04", nivel: "T2", email: "matheuss.arq@gmail.com", end: "QN 19 Conj 01 casa 36", ministerio: "Sem ministério", fp: "Sem formador", conjuge: { nome: "Larissa Torres", nasc: "1999-02-05" }, filhos: [{ nome: "Maria Tereza", nasc: "2017-02-18" }, { nome: "José Pedro", nasc: "A caminho" }] },
+        { nome: "Laura Silva Santos", nasc: "1995-12-10", casam: "-", nivel: "T2", email: "laurassantos1012@gmail.com", end: "QNA 38 casa 30", ministerio: "Pastoreio", fp: "Sem formador", conjuge: null, filhos: [] },
+        { nome: "Vinicius Henrique de Souza Araújo", nasc: "2002-12-15", casam: "-", nivel: "T1", email: "viniafad@gmail.com", end: "Rua 28 norte, lote 04 - Águas claras", ministerio: "Sem ministério", fp: "Matheus Tonhá", conjuge: null, filhos: [] },
+        { nome: "Marlene do Nascimento Nunes Silva", nasc: "1972-07-12", casam: "1994-12-10", nivel: "T1", email: "marlene.nsilva3@gmail.com", end: "Qsd 21 casa 6 Taguatinga Sul", ministerio: "Secretaria Comunitária", fp: "Janaina", conjuge: { nome: "Wemerson Pereira Silva", nasc: "1972-04-04" }, filhos: [{ nome: "Gabriel Nunes Silva", nasc: "1996-06-21" }, { nome: "João Vitor", nasc: "2000-04-11" }, { nome: "Maria Helena", nasc: "2004-12-27" }, { nome: "Maria Isabel", nasc: "2012-03-25" }] },
+        { nome: "Remulo Corrêa de Araújo", nasc: "1976-05-23", casam: "2018-11-03", nivel: "T1", email: "remulocorrea@gmail.com", end: "Quadra 105 conj F1 ap 41 sol nascente", ministerio: "Primeiro anúncio", fp: "Frederico (fred)", conjuge: { nome: "Mirian Cristine Corrêa Araújo", nasc: "1979-03-29" }, filhos: [{ nome: "Suzana Corrêa Araújo", nasc: "2019-11-27" }] },
+        { nome: "Maria Beatriz Araújo Otaviano da Silva", nasc: "2001-11-24", casam: "-", nivel: "T1", email: "maria.beatriz7412@gmail.com", end: "Colônia Agrícola Samambaia Rua 1", ministerio: "Coordenação da comunicação", fp: "Renata Ribas", conjuge: null, filhos: [] },
+        { nome: "Bianklin Bessa Rizzi", nasc: "1999-07-17", casam: "2024-12-28", nivel: "T1", email: "bianklinb@gmail.com", end: "CNB 6, Res. Dona Elvira - Ap 602", ministerio: "Acompanhador Vocacional", fp: "Pedro Nonato", conjuge: { nome: "Mirele Mendes Xavier Rizzi", nasc: "2000-11-11" }, filhos: [{ nome: "Maria Clara Xavier Rizzi", nasc: "2025-11-26" }] },
+        { nome: "Graziely Sales Palma", nasc: "1983-08-25", casam: "-", nivel: "T1", email: "graziely.palma@gmail.com", end: "QNM 5 CJ J CASA 46 Ceilândia Sul", ministerio: "Promoção humana", fp: "Sem FP", conjuge: null, filhos: [] },
+        { nome: "JOSE IGOR ROCHA DE MOURA", nasc: "1996-03-29", casam: "-", nivel: "T1", email: "igorrochash@gmail.com", end: "qn 614 cj d lote 01", ministerio: "Não tenho", fp: "Não tenho", conjuge: null, filhos: [] },
+        { nome: "Valéria Avelar Mendes Braz", nasc: "1980-09-26", casam: "-", nivel: "Formação", email: "valeria.avelarmendes@gmail.com", end: "Rua 08 Sul res. Jales Machado", ministerio: "Ministério de Formação e mesce", fp: "Regina Machado", conjuge: null, filhos: [{ nome: "Davi Avelar Mendes Braz", nasc: "2009-04-12" }] },
+        { nome: "Fernanda Vidal da Silva Albuquerque", nasc: "1981-07-15", casam: "2007-11-14", nivel: "Formação", email: "fevidal1507@gmail.com", end: "CNB 06 LOTE 04 BLOCO 1 AP 305", ministerio: "Ministério de Formação - Assistente", fp: "Mônica Feijó", conjuge: { nome: "Rafael de Brito Albuquerque", nasc: "1982-06-06" }, filhos: [{ nome: "Mariana Vidal Albuquerque", nasc: "2012-08-20" }] }
     ];
 
     let mesAtual = new Date().getMonth();
+    let mesVigiliaAtiva = new Date().getMonth();
     const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
     function formatarDataExibicao(data) {
@@ -278,11 +264,9 @@
     }
 
     function showView(view) {
-        // Esconde todas as seções
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
         const menu = document.getElementById('main-menu');
         const btnVoltar = document.getElementById('btn-voltar');
-
         if (view === 'menu') {
             menu.style.display = 'grid';
             btnVoltar.classList.add('hidden');
@@ -292,6 +276,7 @@
             const target = document.getElementById('view-' + view);
             if(target) target.classList.add('active');
             if(view === 'celebracoes') renderCelebracoes();
+            if(view === 'vigilias') renderVigilia();
         }
         window.scrollTo(0,0);
     }
@@ -303,6 +288,40 @@
         const fHtml = p.filhos.length > 0 ? `<div class="mt-4 p-3 bg-slate-50 rounded-2xl border border-slate-100"><p class="text-[9px] font-black text-slate-400 uppercase mb-2">Filhos:</p>${p.filhos.map(f => `<p class="text-[11px] text-slate-700 font-semibold mb-1">👶 ${f.nome} <span class="font-normal opacity-60">(${formatarDataExibicao(f.nasc)})</span></p>`).join('')}</div>` : '';
         const cHtml = p.conjuge ? `<div class="mt-4 p-3 bg-slate-100/50 rounded-2xl border border-slate-200"><p class="text-[9px] font-black text-slate-500 uppercase mb-2">Cônjuge:</p><p class="text-[11px] text-slate-900 font-bold">💍 ${p.conjuge.nome} <span class="font-normal text-slate-600">(${formatarDataExibicao(p.conjuge.nasc)})</span></p></div>` : '';
         return `<div class="bg-white rounded-[2rem] p-6 shadow-sm border border-white flex flex-col h-full ${cardClass}"><div class="mb-5 flex justify-between items-start gap-3"><h3 class="font-bold text-slate-900 leading-tight text-sm tracking-tight">${p.nome}</h3><span class="px-2 py-1 rounded-lg text-[8px] font-black tracking-widest ${labelClass} flex-shrink-0">${displayNivel}</span></div><div class="space-y-3 flex-grow"><div class="flex items-start gap-3"><span class="text-xs opacity-50">📍</span> <p class="text-[10px] text-slate-500 leading-relaxed">${p.end}</p></div><div class="flex items-start gap-6 mt-4 pt-4 border-t border-slate-50"><div><p class="text-[8px] font-black text-slate-400 uppercase mb-1">Nascimento</p><p class="text-[10px] font-bold text-slate-700">${formatarDataExibicao(p.nasc)}</p></div>${p.casam !== '-' ? `<div><p class="text-[8px] font-black text-slate-400 uppercase mb-1">Casamento</p><p class="text-[10px] font-bold text-slate-700">${formatarDataExibicao(p.casam)}</p></div>` : ''}</div></div>${cHtml}${fHtml}<div class="mt-6 p-3 rounded-2xl border bg-slate-50"><p class="text-[8px] font-black uppercase tracking-[0.15em] opacity-60 mb-1">Ministério Atual</p><p class="text-[10px] font-bold text-slate-800">${p.ministerio}</p></div><div class="mt-3 p-4 rounded-2xl border ${fpBg} flex items-center justify-between"><div><p class="text-[8px] font-black uppercase tracking-[0.15em] opacity-60">Formador Pessoal</p><p class="text-xs font-bold">${p.fp}</p></div></div></div>`;
+    }
+
+    function mudarMesVigilia(delta) {
+        mesVigiliaAtiva = (mesVigiliaAtiva + delta + 12) % 12;
+        renderVigilia();
+    }
+
+    function renderVigilia() {
+        document.getElementById('titulo-mes-vigilia').innerText = meses[mesVigiliaAtiva];
+        const container = document.getElementById('escala-vigilia-container');
+        const grupoA = ["Fernanda", "Igor", "Matheus", "Bianklin", "Laura"];
+        const grupoB = ["Valéria", "Filipe", "Lara", "Graziely", "Beatriz", "Vinicius", "Odilon"];
+        const mesReferencia = 4; // Maio
+        const inverter = (mesVigiliaAtiva % 2) !== (mesReferencia % 2);
+        const escala1 = inverter ? grupoB : grupoA;
+        const escala2 = inverter ? grupoA : grupoB;
+        const tagFixo = `<span class="bg-slate-900 text-white text-[7px] font-black px-1.5 py-0.5 rounded ml-1 tracking-widest">FIXO</span>`;
+
+        container.innerHTML = `
+            <div class="bg-white p-6 rounded-[2rem] shadow-sm border-l-4 border-red-600">
+                <div class="mb-4"><span class="bg-red-50 text-red-600 text-[9px] font-black px-2 py-1 rounded-md uppercase">1º Horário (22:00 às 02:00)</span></div>
+                <div class="space-y-2">
+                    <p class="text-xs bg-red-50/50 p-2 rounded-xl border border-red-100/50"><strong class="text-red-700 italic">Cynthia e Tamara</strong>${tagFixo}</p>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium px-2">${escala1.join(', ')}</p>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-[2rem] shadow-sm border-l-4 border-blue-600">
+                <div class="mb-4"><span class="bg-blue-50 text-blue-600 text-[9px] font-black px-2 py-1 rounded-md uppercase">2º Horário (02:00 às 06:00)</span></div>
+                <div class="space-y-2">
+                    <p class="text-xs bg-blue-50/50 p-2 rounded-xl border border-blue-100/50"><strong class="text-blue-700 italic">Rêmulo</strong>${tagFixo}</p>
+                    <p class="text-xs text-slate-500 leading-relaxed font-medium px-2">${escala2.join(', ')}</p>
+                </div>
+            </div>
+        `;
     }
 
     function renderCelebracoes() {
@@ -318,21 +337,13 @@
             const nData = p.nasc.split('-');
             if(parseInt(nData[1]) === mAlvo) {
                 const id = `M-${p.nome}-${nData[2]}`;
-                if(!niversUnicos.has(id)) {
-                    nivers.push({ dia: parseInt(nData[2]), nome: p.nome, desc: 'Membro' });
-                    niversUnicos.add(id);
-                    if(parseInt(nData[2]) === diaHoje && mAlvo === mesHoje) niversHojeInfo.push({nome: p.nome, tipo: 'Membro(a)'});
-                }
+                if(!niversUnicos.has(id)) { nivers.push({ dia: parseInt(nData[2]), nome: p.nome, desc: 'Membro' }); niversUnicos.add(id); if(parseInt(nData[2]) === diaHoje && mAlvo === mesHoje) niversHojeInfo.push({nome: p.nome, tipo: 'Membro(a)'}); }
             }
             if(p.conjuge) {
                 const cData = p.conjuge.nasc.split('-');
                 if(parseInt(cData[1]) === mAlvo) {
                     const id = `C-${p.conjuge.nome}-${cData[2]}`;
-                    if(!niversUnicos.has(id)) {
-                        nivers.push({ dia: parseInt(cData[2]), nome: p.conjuge.nome, desc: `Cônjuge de ${p.nome.split(' ')[0]}` });
-                        niversUnicos.add(id);
-                        if(parseInt(cData[2]) === diaHoje && mAlvo === mesHoje) niversHojeInfo.push({nome: p.conjuge.nome, tipo: `Cônjuge de ${p.nome.split(' ')[0]}`});
-                    }
+                    if(!niversUnicos.has(id)) { nivers.push({ dia: parseInt(cData[2]), nome: p.conjuge.nome, desc: `Cônjuge de ${p.nome.split(' ')[0]}` }); niversUnicos.add(id); if(parseInt(cData[2]) === diaHoje && mAlvo === mesHoje) niversHojeInfo.push({nome: p.conjuge.nome, tipo: `Cônjuge de ${p.nome.split(' ')[0]}`}); }
                 }
             }
             p.filhos.forEach(f => {
@@ -340,11 +351,7 @@
                     const fData = f.nasc.split('-');
                     if(parseInt(fData[1]) === mAlvo) {
                         const id = `F-${f.nome}-${fData[2]}`;
-                        if(!niversUnicos.has(id)) {
-                            nivers.push({ dia: parseInt(fData[2]), nome: f.nome, desc: `Filho(a) de ${p.nome.split(' ')[0]}` });
-                            niversUnicos.add(id);
-                            if(parseInt(fData[2]) === diaHoje && mAlvo === mesHoje) niversHojeInfo.push({nome: f.nome, tipo: `Filho(a) de ${p.nome.split(' ')[0]}`});
-                        }
+                        if(!niversUnicos.has(id)) { nivers.push({ dia: parseInt(fData[2]), nome: f.nome, desc: `Filho(a) de ${p.nome.split(' ')[0]}` }); niversUnicos.add(id); if(parseInt(fData[2]) === diaHoje && mAlvo === mesHoje) niversHojeInfo.push({nome: f.nome, tipo: `Filho(a) de ${p.nome.split(' ')[0]}`}); }
                     }
                 }
             });
@@ -352,10 +359,7 @@
                 const bData = p.casam.split('-');
                 if(parseInt(bData[1]) === mAlvo) {
                     const idBoda = [p.nome, p.conjuge?.nome].sort().join('|');
-                    if(!bodasUnicas.has(idBoda)) {
-                        casamentos.push({ dia: parseInt(bData[2]), nome: p.conjuge ? `${p.nome.split(' ')[0]} & ${p.conjuge.nome.split(' ')[0]}` : p.nome });
-                        bodasUnicas.add(idBoda);
-                    }
+                    if(!bodasUnicas.has(idBoda)) { casamentos.push({ dia: parseInt(bData[2]), nome: p.conjuge ? `${p.nome.split(' ')[0]} & ${p.conjuge.nome.split(' ')[0]}` : p.nome }); bodasUnicas.add(idBoda); }
                 }
             }
         });
@@ -364,10 +368,7 @@
         const detalhes = document.getElementById('detalhes-alerta');
         if(niversHojeInfo.length > 0) {
             alertBox.style.display = 'block';
-            detalhes.innerHTML = niversHojeInfo.map(n => `
-                <p class="font-bold text-sm leading-tight">${n.nome} <span class="font-normal opacity-80">(${n.tipo})</span></p>
-                <p class="text-xs italic opacity-90 mt-1 font-medium">Parabéns! Que a Virgem Maria interceda por sua vida e missão hoje e sempre!</p>
-            `).join('<div class="h-2"></div>');
+            detalhes.innerHTML = niversHojeInfo.map(n => `<p class="font-bold text-sm leading-tight">${n.nome} <span class="font-normal opacity-80">(${n.tipo})</span></p>`).join('<div class="h-2"></div>');
         } else { alertBox.style.display = 'none'; }
 
         nivers.sort((a,b) => a.dia - b.dia);
@@ -393,6 +394,7 @@
         document.getElementById('grid-t1').innerHTML = membros.filter(m => m.nivel === 'T1').map(createCard).join('');
         document.getElementById('grid-formadoras').innerHTML = membros.filter(m => m.nivel === 'Formação').map(createCard).join('');
         renderCelebracoes();
+        renderVigilia();
     };
 </script>
 </body>
