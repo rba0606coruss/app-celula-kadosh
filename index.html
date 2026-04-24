@@ -35,6 +35,39 @@
         .banner-alerta { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.95; } }
         .hidden { display: none; }
+        /* Localize o final do seu <style> e insira isto: */
+
+        .check-month {
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border: 2px solid #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            background: white;
+            flex-shrink: 0;
+        }
+
+        .check-month:checked {
+            background-color: #ef4444; /* Vermelho Kadosh */
+            border-color: #ef4444;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .check-month:checked::after {
+            content: "✓";
+            color: white;
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .custom-scroll::-webkit-scrollbar { height: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
     </style>
 </head>
 <body class="pb-10">
@@ -96,6 +129,10 @@
             <div onclick="showView('vigilias')" class="menu-card bg-slate-100 p-6 rounded-[2rem] text-center shadow-sm">
                 <span class="text-3xl block mb-2">🛐</span>
                 <span class="text-[10px] font-black uppercase tracking-tighter text-slate-800">Vigílias</span>
+            </div>
+            <div onclick="acessoRestrito()" class="menu-card bg-slate-800 p-6 rounded-[2rem] text-center shadow-sm border border-slate-700">
+                <span class="text-3xl block mb-2">🔐</span>
+                <span class="text-[10px] font-black uppercase tracking-tighter text-slate-400">Controle Formadores</span>
             </div>
         </div>
 
@@ -202,6 +239,33 @@
                 </div>
             </div>
         </section>
+
+        <section id="view-controle" class="view-section">
+            <div class="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border border-slate-100">
+                <div class="p-8 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h2 class="font-serif text-2xl text-slate-900">Acompanhamento</h2>
+                        <p class="text-[10px] text-red-600 font-black uppercase tracking-widest">Controle Mensal</p>
+                    </div>
+                    <div id="status-save" class="text-[9px] font-black text-slate-400 uppercase tracking-widest"></div>
+                </div>
+                
+                <div class="overflow-x-auto custom-scroll">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-slate-50/50">
+                                <th class="p-6 sticky left-0 bg-slate-50 z-20 text-[10px] font-black text-slate-400 uppercase">Formando</th>
+                                <th class="p-6 text-center">
+                                    <div id="meses-header" class="flex gap-3 justify-center"></div>
+                                </th>
+                                <th class="p-6 text-right text-[10px] font-black text-slate-400 uppercase">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-acompanhamento" class="divide-y divide-slate-50"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
     </main>
 
 <script>
@@ -242,7 +306,6 @@
         { nome: "Iraneide Nunes dos Santos Viana", nasc: "1982-09-03", casam: "2006-06-03", nivel: "T2", email: "viannairaneide03@gmail.com", end: "Qnl 11 conj D casa 9", ministerio: "Sem ministério", fp: "Trindade Madalena", conjuge: { nome: "Frank Viana dos Santos", nasc: "1978-11-21" }, filhos: [{ nome: "Chiara", nasc: "2008-12-23" }, { nome: "Heitor", nasc: "2011-05-08" }, { nome: "Marcos", nasc: "2019-04-13" }, { nome: "Isaac", nasc: "2025-04-07" }] },
         { nome: "Frank Viana dos Santos", nasc: "1978-11-21", casam: "2006-06-03", nivel: "T2", email: "frankviana@email.com", end: "Qnl 11 conj D casa 9", ministerio: "Sem ministério", fp: "Sem formador", conjuge: { nome: "Iraneide Nunes dos Santos Viana", nasc: "1982-09-03" }, filhos: [{ nome: "Chiara", nasc: "2008-12-23" }, { nome: "Heitor", nasc: "2011-05-08" }, { nome: "Marcos", nasc: "2019-04-13" }, { nome: "Isaac", nasc: "2025-04-07" }] },
         { nome: "Tamara Melo de Oliveira", nasc: "1991-02-26", casam: "-", nivel: "T2", email: "tamara.oliveira36@gmail.com", end: "Qd 04 conj D casa 17 cond São Francisco", ministerio: "Centro de formação", fp: "Camila", conjuge: null, filhos: [] },
-        { nome: "Mariana Vidal - CV", nasc: "1991-04-30", casam: "-", nivel: "T2", email: "-", end: "Casa comunitária", ministerio: "-", fp: "-", conjuge: null, filhos: [] },
         { nome: "Lara Dayane Dias de Jesus", nasc: "1997-11-07", casam: "-", nivel: "T2", email: "laradayanemarinha2025@gmail.com", end: "CLN 7, bloco A, Riacho Fundo", ministerio: "Espaço de Paz", fp: "Kelly Soares", conjuge: null, filhos: [] },
         { nome: "Francisco Odilon Farias Junior", nasc: "2001-10-17", casam: "-", nivel: "T2", email: "franciscoodilon18@gmail.com", end: "QR 313 conjunto 2 Samambaia Sul", ministerio: "Pastor de Grupo de oração adulto", fp: "Victor Moreschi", conjuge: null, filhos: [] },
         { nome: "Filipe Rodrigues Azevedo", nasc: "1998-08-10", casam: "2024-09-14", nivel: "T2", email: "filiperazevedo1@gmail.com", end: "QN1 Lote 29, Conjunto 30", ministerio: "Acompanhador vocacional", fp: "Paulo Cesar", conjuge: { nome: "Lorrany Rezende Azevedo", nasc: "1999-04-30" }, filhos: [{ nome: "Aurora Rezende Azevedo", nasc: "2025-06-26" }] },
@@ -253,7 +316,7 @@
         { nome: "Remulo Corrêa de Araújo", nasc: "1976-05-23", casam: "2018-11-03", nivel: "T1", email: "remulocorrea@gmail.com", end: "Quadra 105 conj F1 ap 41 sol nascente", ministerio: "Primeiro anúncio", fp: "Frederico (fred)", conjuge: { nome: "Mirian Cristine Corrêa Araújo", nasc: "1979-03-29" }, filhos: [{ nome: "Suzana Corrêa Araújo", nasc: "2019-11-27" }] },
         { nome: "Maria Beatriz Araújo Otaviano da Silva", nasc: "2001-11-24", casam: "-", nivel: "T1", email: "maria.beatriz7412@gmail.com", end: "Colônia Agrícola Samambaia Rua 1", ministerio: "Coordenação da comunicação", fp: "Renata Ribas", conjuge: null, filhos: [] },
         { nome: "Bianklin Bessa Rizzi", nasc: "1999-07-17", casam: "2024-12-28", nivel: "T1", email: "bianklinb@gmail.com", end: "CNB 6, Res. Dona Elvira - Ap 602", ministerio: "Acompanhador Vocacional", fp: "Pedro Nonato", conjuge: { nome: "Mirele Mendes Xavier Rizzi", nasc: "2000-11-11" }, filhos: [{ nome: "Maria Clara Xavier Rizzi", nasc: "2025-11-26" }] },
-        { nome: "Graziely Sales Palma", nasc: "1983-08-25", casam: "-", nivel: "T1", email: "graziely.palma@gmail.com", end: "QNM 5 CJ J CASA 46 Ceilândia Sul", ministerio: "Promoção humana", fp: "Rose - CV", conjuge: null, filhos: [] },
+        { nome: "Graziely Sales Palma", nasc: "1983-08-25", casam: "-", nivel: "T1", email: "graziely.palma@gmail.com", end: "QNM 5 CJ J CASA 46 Ceilândia Sul", ministerio: "Promoção humana", fp: "Sem FP", conjuge: null, filhos: [] },
         { nome: "JOSE IGOR ROCHA DE MOURA", nasc: "1996-03-29", casam: "-", nivel: "T1", email: "igorrochash@gmail.com", end: "qn 614 cj d lote 01", ministerio: "Não tenho", fp: "Não tenho", conjuge: null, filhos: [] },
         { nome: "Valéria Avelar Mendes Braz", nasc: "1980-09-26", casam: "-", nivel: "Formação", email: "valeria.avelarmendes@gmail.com", end: "Rua 08 Sul res. Jales Machado", ministerio: "Ministério de Formação e mesce", fp: "Regina Machado", conjuge: null, filhos: [{ nome: "Davi Avelar Mendes Braz", nasc: "2009-04-12" }] },
         { nome: "Fernanda Vidal da Silva Albuquerque", nasc: "1981-07-15", casam: "2007-11-14", nivel: "Formação", email: "fevidal1507@gmail.com", end: "CNB 06 LOTE 04 BLOCO 1 AP 305", ministerio: "Ministério de Formação - Assistente", fp: "Mônica Feijó", conjuge: { nome: "Rafael de Brito Albuquerque", nasc: "1982-06-06" }, filhos: [{ nome: "Mariana Vidal Albuquerque", nasc: "2012-08-20" }] }
@@ -329,6 +392,116 @@
             </div>
         `;
     }
+
+    // Insira estas variáveis e funções no final do seu bloco de scripts
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwRCvdS2YX-VcaGlZgq-m1GvOFjPlmj-LZo_6ejL1SEuyhFV2YCFBhy9ZCISHCqgQ5i/exec'; 
+
+    function acessoRestrito() {
+        const senha = prompt("Acesso restrito. Digite a senha:");
+        if (senha === "2026") {
+            showView('controle');
+            renderTabelaControle();
+            carregarDadosDoDrive(); // Adicionado aqui!
+        } else if (senha !== null) {
+            alert("Senha incorreta!");
+        }
+}
+
+    function renderTabelaControle() {
+        const header = document.getElementById('meses-header');
+        const container = document.getElementById('tabela-acompanhamento');
+        const mesesAbrev = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+    
+    // Renderiza letras dos meses no topo
+    header.innerHTML = mesesAbrev.map(m => `<div class="w-7 text-center text-[10px] font-black text-slate-400">${m}</div>`).join('');
+
+    // Renderiza cada linha com o novo design
+    container.innerHTML = membros.map((m, idx) => `
+        <tr class="group hover:bg-slate-50/50 transition-colors">
+            <td class="p-6 sticky left-0 bg-white group-hover:bg-slate-50 z-10 border-r border-slate-50">
+                <p class="text-sm font-bold text-slate-800">${m.nome.split(' ')[0]}</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-tighter">${m.nivel}</p>
+            </td>
+            <td class="p-6">
+                <div class="flex gap-3 justify-center">
+                    ${mesesAbrev.map((_, i) => `
+                        <input type="checkbox" data-membro="${idx}" class="check-month" onchange="atualizarSoma(${idx})">
+                    `).join('')}
+                </div>
+            </td>
+            <td class="p-6 text-right">
+                <div class="flex items-center justify-end gap-3">
+                    <span id="total-${idx}" class="text-lg font-black text-slate-200 tabular-nums">0</span>
+                    <div class="w-1.5 h-10 bg-slate-100 rounded-full overflow-hidden flex flex-col-reverse">
+                        <div id="progress-${idx}" class="w-full h-0 bg-slate-300 transition-all duration-500"></div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+    function atualizarSoma(idx, deveSalvar = true) {
+        const checkboxes = document.querySelectorAll(`input[data-membro="${idx}"]`);
+        const totalSpan = document.getElementById(`total-${idx}`);
+        const progressBar = document.getElementById(`progress-${idx}`);
+        const marcados = Array.from(checkboxes).filter(cb => cb.checked).length;
+        
+        totalSpan.innerText = marcados;
+        progressBar.style.height = (marcados / 12) * 100 + '%';
+
+        // Cores dinâmicas
+        if (marcados === 0) {
+            totalSpan.className = "text-lg font-black text-slate-200";
+            progressBar.className = "w-full bg-slate-300 transition-all";
+        } else if (marcados < 12) {
+            totalSpan.className = "text-lg font-black text-blue-600";
+            progressBar.className = "w-full bg-blue-600 transition-all";
+        } else {
+            totalSpan.className = "text-xl font-black text-emerald-500 scale-110 transition-all";
+            progressBar.className = "w-full bg-emerald-500 shadow-[0_0_8px_#10b981]";
+        }
+
+        if (deveSalvar) {
+            // Busca qual checkbox disparou a mudança
+            const evento = window.event;
+            if (evento && evento.target) {
+                const mesIndex = Array.from(checkboxes).indexOf(evento.target);
+                if (mesIndex !== -1) {
+                    salvarNoDrive(membros[idx].nome, mesIndex, evento.target.checked);
+                }
+            }
+        }
+}
+
+    async function salvarNoDrive(nomeMembro, mesIdx, statusCheck) {
+        const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        const mesPorExtenso = meses[mesIdx];
+        const dataAgora = new Date().toLocaleString('pt-BR');
+
+        // Usando FormData para garantir a compatibilidade com o Google Script
+        const formData = new FormData();
+        formData.append('nome', nomeMembro);
+        formData.append('mes', mesPorExtenso);
+        formData.append('data', dataAgora);
+        formData.append('status', statusCheck);
+
+        const statusDiv = document.getElementById('status-save');
+        statusDiv.innerText = "⏳ SALVANDO...";
+
+        try {
+            // Removido o 'no-cors' para permitir que o navegador siga o redirecionamento do Google
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            });
+            statusDiv.innerText = "✅ SINCRONIZADO";
+            setTimeout(() => statusDiv.innerText = "", 2000);
+        } catch (e) {
+            console.error("Erro ao salvar:", e);
+            statusDiv.innerText = "❌ ERRO AO SALVAR";
+        }
+}
 
     function renderCelebracoes() {
         document.getElementById('titulo-mes').innerText = meses[mesAtual];
