@@ -68,6 +68,43 @@
 
         .custom-scroll::-webkit-scrollbar { height: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        /* Container que segura os cards - faz eles ficarem em colunas */
+        #tabela-acompanhamento {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        /* Layout adaptativo */
+        #tabela-acompanhamento {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            padding-bottom: 3rem;
+        }
+
+        /* Estilização para o texto dentro do botão marcado */
+        .check-month:checked + div span {
+            color: white !important;
+        }
+
+        /* Animação de "pulo" ao marcar */
+        .check-month:checked + div {
+            animation: pulseCheck 0.3s ease-in-out;
+        }
+
+        @keyframes pulseCheck {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 480px) {
+            #tabela-acompanhamento {
+                grid-template-columns: 1fr;
+            }
+}
     </style>
 </head>
 <body class="pb-10">
@@ -96,45 +133,47 @@
     </div>
 
     <main class="max-w-5xl mx-auto p-6">
-        
-        <div id="main-menu" class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-            <div onclick="showView('celebracoes')" class="menu-card bg-rose-50 p-6 rounded-[2rem] text-center shadow-sm">
-                <span class="text-3xl block mb-2">🎂</span>
-                <span class="text-[10px] font-black uppercase tracking-tighter text-rose-700">Aniversariantes</span>
+    
+        <section id="view-menu" class="view-section active">
+            <div id="main-menu" class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+                <div onclick="showView('celebracoes')" class="menu-card bg-rose-50 p-6 rounded-[2rem] text-center shadow-sm">
+                    <span class="text-3xl block mb-2">🎂</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-rose-700">Aniversariantes</span>
+                </div>
+                <div onclick="showView('formadoras')" class="menu-card bg-amber-50 p-6 rounded-[2rem] text-center shadow-sm">
+                    <span class="text-3xl block mb-2">🐑</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-amber-700">Formadoras</span>
+                </div>
+                <div onclick="showView('t2')" class="menu-card bg-red-50 p-6 rounded-[2rem] text-center shadow-sm">
+                    <span class="text-3xl block mb-2">🕯️</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-red-800">Consagrados T2</span>
+                </div>
+                <div onclick="showView('t1')" class="menu-card bg-blue-50 p-6 rounded-[2rem] text-center shadow-sm">
+                    <span class="text-3xl block mb-2">🕊️</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-blue-800">Consagrados T1</span>
+                </div>
+                <div onclick="showView('partilhas')" class="menu-card bg-emerald-50 p-6 rounded-[2rem] text-center shadow-sm">
+                    <span class="text-3xl block mb-2">👥</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-emerald-800">Grupos de Partilha</span>
+                </div>
+                <div onclick="showView('servicos')" class="menu-card bg-purple-50 p-6 rounded-[2rem] text-center shadow-sm">
+                    <span class="text-3xl block mb-2">🤝</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-purple-800">Serviços</span>
+                </div>
+                <div onclick="showView('comunitaria')" class="menu-card bg-orange-50 p-6 rounded-[2rem] text-center shadow-sm">
+                    <span class="text-3xl block mb-2">📜</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-orange-800">Form. Comunitária</span>
+                </div>
+                <div onclick="showView('vigilias')" class="menu-card bg-slate-100 p-6 rounded-[2rem] text-center shadow-sm">
+                    <span class="text-3xl block mb-2">🛐</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-slate-800">Vigílias</span>
+                </div>
+                <div onclick="acessoRestrito()" class="menu-card bg-slate-800 p-6 rounded-[2rem] text-center shadow-sm border border-slate-700">
+                    <span class="text-3xl block mb-2">🔐</span>
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-slate-400">Controle Formadores</span>
+                </div>
             </div>
-            <div onclick="showView('formadoras')" class="menu-card bg-amber-50 p-6 rounded-[2rem] text-center shadow-sm">
-                <span class="text-3xl block mb-2">🐑</span>
-                <span class="text-[10px] font-black uppercase tracking-tighter text-amber-700">Formadoras</span>
-            </div>
-            <div onclick="showView('t2')" class="menu-card bg-red-50 p-6 rounded-[2rem] text-center shadow-sm">
-                <span class="text-3xl block mb-2">🕯️</span>
-                <span class="text-[10px] font-black uppercase tracking-tighter text-red-800">Consagrados T2</span>
-            </div>
-            <div onclick="showView('t1')" class="menu-card bg-blue-50 p-6 rounded-[2rem] text-center shadow-sm">
-                <span class="text-3xl block mb-2">🕊️</span>
-                <span class="text-[10px] font-black uppercase tracking-tighter text-blue-800">Consagrados T1</span>
-            </div>
-            <div onclick="showView('partilhas')" class="menu-card bg-emerald-50 p-6 rounded-[2rem] text-center shadow-sm">
-                <span class="text-3xl block mb-2">👥</span>
-                <span class="text-[10px] font-black uppercase tracking-tighter text-emerald-800">Grupos de Partilha</span>
-            </div>
-            <div onclick="showView('servicos')" class="menu-card bg-purple-50 p-6 rounded-[2rem] text-center shadow-sm">
-                <span class="text-3xl block mb-2">🤝</span>
-                <span class="text-[10px] font-black uppercase tracking-tighter text-purple-800">Serviços</span>
-            </div>
-            <div onclick="showView('comunitaria')" class="menu-card bg-orange-50 p-6 rounded-[2rem] text-center shadow-sm">
-                <span class="text-3xl block mb-2">📜</span>
-                <span class="text-[10px] font-black uppercase tracking-tighter text-orange-800">Form. Comunitária</span>
-            </div>
-            <div onclick="showView('vigilias')" class="menu-card bg-slate-100 p-6 rounded-[2rem] text-center shadow-sm">
-                <span class="text-3xl block mb-2">🛐</span>
-                <span class="text-[10px] font-black uppercase tracking-tighter text-slate-800">Vigílias</span>
-            </div>
-            <div onclick="acessoRestrito()" class="menu-card bg-slate-800 p-6 rounded-[2rem] text-center shadow-sm border border-slate-700">
-                <span class="text-3xl block mb-2">🔐</span>
-                <span class="text-[10px] font-black uppercase tracking-tighter text-slate-400">Controle Formadores</span>
-            </div>
-        </div>
+        </section>
 
         <button id="btn-voltar" onclick="showView('menu')" class="hidden mb-8 flex items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors font-black text-xs tracking-widest">
             <span class="bg-white w-8 h-8 flex items-center justify-center rounded-full shadow-sm">⇠</span> VOLTAR AO MENU
@@ -241,30 +280,13 @@
         </section>
 
         <section id="view-controle" class="view-section">
-            <div class="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border border-slate-100">
-                <div class="p-8 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
-                    <div>
-                        <h2 class="font-serif text-2xl text-slate-900">Acompanhamento</h2>
-                        <p class="text-[10px] text-red-600 font-black uppercase tracking-widest">Controle Mensal</p>
-                    </div>
-                    <div id="status-save" class="text-[9px] font-black text-slate-400 uppercase tracking-widest"></div>
-                </div>
-                
-                <div class="overflow-x-auto custom-scroll">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="bg-slate-50/50">
-                                <th class="p-6 sticky left-0 bg-slate-50 z-20 text-[10px] font-black text-slate-400 uppercase">Formando</th>
-                                <th class="p-6 text-center">
-                                    <div id="meses-header" class="flex gap-3 justify-center"></div>
-                                </th>
-                                <th class="p-6 text-right text-[10px] font-black text-slate-400 uppercase">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabela-acompanhamento" class="divide-y divide-slate-50"></tbody>
-                    </table>
-                </div>
+            <div class="flex flex-col gap-1 mb-6 px-2">
+                <h2 class="font-serif text-3xl text-slate-900">Acompanhamento</h2>
+                <div id="status-save" class="h-4 text-[10px] font-black tracking-[0.2em] uppercase"></div>
             </div>
+
+            <div id="tabela-acompanhamento" class="grid grid-cols-1 gap-4">
+                </div>
         </section>
     </main>
 
@@ -317,7 +339,7 @@
         { nome: "Maria Beatriz Araújo Otaviano da Silva", nasc: "2001-11-24", casam: "-", nivel: "T1", email: "maria.beatriz7412@gmail.com", end: "Colônia Agrícola Samambaia Rua 1", ministerio: "Coordenação da comunicação", fp: "Renata Ribas", conjuge: null, filhos: [] },
         { nome: "Bianklin Bessa Rizzi", nasc: "1999-07-17", casam: "2024-12-28", nivel: "T1", email: "bianklinb@gmail.com", end: "CNB 6, Res. Dona Elvira - Ap 602", ministerio: "Acompanhador Vocacional", fp: "Pedro Nonato", conjuge: { nome: "Mirele Mendes Xavier Rizzi", nasc: "2000-11-11" }, filhos: [{ nome: "Maria Clara Xavier Rizzi", nasc: "2025-11-26" }] },
         { nome: "Graziely Sales Palma", nasc: "1983-08-25", casam: "-", nivel: "T1", email: "graziely.palma@gmail.com", end: "QNM 5 CJ J CASA 46 Ceilândia Sul", ministerio: "Promoção humana", fp: "Sem FP", conjuge: null, filhos: [] },
-        { nome: "JOSE IGOR ROCHA DE MOURA", nasc: "1996-03-29", casam: "-", nivel: "T1", email: "igorrochash@gmail.com", end: "qn 614 cj d lote 01", ministerio: "Não tenho", fp: "Não tenho", conjuge: null, filhos: [] },
+        { nome: "Jose Igor Rocha de Moura", nasc: "1996-03-29", casam: "-", nivel: "T1", email: "igorrochash@gmail.com", end: "qn 614 cj d lote 01", ministerio: "Não tenho", fp: "Não tenho", conjuge: null, filhos: [] },
         { nome: "Valéria Avelar Mendes Braz", nasc: "1980-09-26", casam: "-", nivel: "Formação", email: "valeria.avelarmendes@gmail.com", end: "Rua 08 Sul res. Jales Machado", ministerio: "Ministério de Formação e mesce", fp: "Regina Machado", conjuge: null, filhos: [{ nome: "Davi Avelar Mendes Braz", nasc: "2009-04-12" }] },
         { nome: "Fernanda Vidal da Silva Albuquerque", nasc: "1981-07-15", casam: "2007-11-14", nivel: "Formação", email: "fevidal1507@gmail.com", end: "CNB 06 LOTE 04 BLOCO 1 AP 305", ministerio: "Ministério de Formação - Assistente", fp: "Mônica Feijó", conjuge: { nome: "Rafael de Brito Albuquerque", nasc: "1982-06-06" }, filhos: [{ nome: "Mariana Vidal Albuquerque", nasc: "2012-08-20" }] }
     ];
@@ -396,111 +418,188 @@
     // Insira estas variáveis e funções no final do seu bloco de scripts
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwRCvdS2YX-VcaGlZgq-m1GvOFjPlmj-LZo_6ejL1SEuyhFV2YCFBhy9ZCISHCqgQ5i/exec'; 
 
-    function acessoRestrito() {
-        const senha = prompt("Acesso restrito. Digite a senha:");
-        if (senha === "2026") {
-            showView('controle');
-            renderTabelaControle();
-            carregarDadosDoDrive(); // Adicionado aqui!
-        } else if (senha !== null) {
-            alert("Senha incorreta!");
-        }
-}
-
-    function renderTabelaControle() {
-        const header = document.getElementById('meses-header');
-        const container = document.getElementById('tabela-acompanhamento');
-        const mesesAbrev = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+function showView(viewId) {
+    // Esconde absolutamente todas as seções que usam a classe view-section
+    document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
     
-    // Renderiza letras dos meses no topo
-    header.innerHTML = mesesAbrev.map(m => `<div class="w-7 text-center text-[10px] font-black text-slate-400">${m}</div>`).join('');
+    const btnVoltar = document.getElementById('btn-voltar');
 
-    // Renderiza cada linha com o novo design
-    container.innerHTML = membros.map((m, idx) => `
-        <tr class="group hover:bg-slate-50/50 transition-colors">
-            <td class="p-6 sticky left-0 bg-white group-hover:bg-slate-50 z-10 border-r border-slate-50">
-                <p class="text-sm font-bold text-slate-800">${m.nome.split(' ')[0]}</p>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-tighter">${m.nivel}</p>
-            </td>
-            <td class="p-6">
-                <div class="flex gap-3 justify-center">
-                    ${mesesAbrev.map((_, i) => `
-                        <input type="checkbox" data-membro="${idx}" class="check-month" onchange="atualizarSoma(${idx})">
-                    `).join('')}
-                </div>
-            </td>
-            <td class="p-6 text-right">
-                <div class="flex items-center justify-end gap-3">
-                    <span id="total-${idx}" class="text-lg font-black text-slate-200 tabular-nums">0</span>
-                    <div class="w-1.5 h-10 bg-slate-100 rounded-full overflow-hidden flex flex-col-reverse">
-                        <div id="progress-${idx}" class="w-full h-0 bg-slate-300 transition-all duration-500"></div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    `).join('');
+    if (viewId === 'menu') {
+        // Mostra o Menu e esconde o botão de voltar
+        document.getElementById('view-menu').classList.add('active');
+        btnVoltar.classList.add('hidden');
+    } else {
+        // Mostra a tela escolhida e o botão de voltar
+        const targetView = document.getElementById('view-' + viewId);
+        if (targetView) {
+            targetView.classList.add('active');
+            btnVoltar.classList.remove('hidden');
+        }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-    function atualizarSoma(idx, deveSalvar = true) {
-        const checkboxes = document.querySelectorAll(`input[data-membro="${idx}"]`);
-        const totalSpan = document.getElementById(`total-${idx}`);
-        const progressBar = document.getElementById(`progress-${idx}`);
-        const marcados = Array.from(checkboxes).filter(cb => cb.checked).length;
+async function acessoRestrito() {
+    const senha = prompt("Digite a senha de acesso:");
+    
+    if (senha === "2026") {
+        document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
         
-        totalSpan.innerText = marcados;
-        progressBar.style.height = (marcados / 12) * 100 + '%';
+        // 1. Mostra a tela e avisa que está carregando
+        const statusDiv = document.getElementById('status-save');
+        document.getElementById('view-controle').classList.add('active');
+        document.getElementById('btn-voltar').classList.remove('hidden');
+        if (statusDiv) statusDiv.innerText = "⏳ CARREGANDO DADOS...";
 
-        // Cores dinâmicas
-        if (marcados === 0) {
-            totalSpan.className = "text-lg font-black text-slate-200";
-            progressBar.className = "w-full bg-slate-300 transition-all";
-        } else if (marcados < 12) {
-            totalSpan.className = "text-lg font-black text-blue-600";
-            progressBar.className = "w-full bg-blue-600 transition-all";
-        } else {
-            totalSpan.className = "text-xl font-black text-emerald-500 scale-110 transition-all";
-            progressBar.className = "w-full bg-emerald-500 shadow-[0_0_8px_#10b981]";
-        }
+        // 2. Monta a estrutura da tabela
+        renderTabelaControle();
+        
+        // 3. Busca os dados salvos no Google Sheets e marca os checkboxes
+        await carregarDadosSalvos();
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+        alert("Senha incorreta!");
+    }
+}
 
-        if (deveSalvar) {
-            // Busca qual checkbox disparou a mudança
-            const evento = window.event;
-            if (evento && evento.target) {
-                const mesIndex = Array.from(checkboxes).indexOf(evento.target);
-                if (mesIndex !== -1) {
-                    salvarNoDrive(membros[idx].nome, mesIndex, evento.target.checked);
+async function carregarDadosSalvos() {
+    const statusDiv = document.getElementById('status-save');
+    const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    
+    try {
+        const response = await fetch(SCRIPT_URL); // Faz um GET para a mesma URL do script
+        const historico = await response.json();
+        
+        // Percorre o histórico e marca os checkboxes correspondentes
+        historico.forEach(registro => {
+            const indexMembro = membros.filter(m => m.nivel !== 'Formação').findIndex(m => m.nome === registro.nome);
+            const indexMes = meses.indexOf(registro.mes);
+            
+            if (indexMembro !== -1 && indexMes !== -1) {
+                const cb = document.querySelector(`input[data-membro="${indexMembro}"][onchange*="${indexMembro}"]`);
+                // Como pode haver vários registros (marcar e desmarcar), o último registro da planilha é o que vale
+                const checkboxes = document.querySelectorAll(`input[data-membro="${indexMembro}"]`);
+                if (checkboxes[indexMes]) {
+                    checkboxes[indexMes].checked = (registro.status === "Marcado");
                 }
             }
+        });
+
+        // Atualiza as somas/barras de progresso de todos após carregar
+        const totalMembros = membros.filter(m => m.nivel !== 'Formação').length;
+        for (let i = 0; i < totalMembros; i++) {
+            atualizarSoma(i);
         }
+
+        if (statusDiv) statusDiv.innerText = "✅ DADOS ATUALIZADOS";
+        setTimeout(() => statusDiv.innerText = "", 2000);
+
+    } catch (e) {
+        console.error("Erro ao carregar:", e);
+        if (statusDiv) statusDiv.innerText = "⚠️ MODO OFFLINE (Não carregou)";
+    }
 }
 
-    async function salvarNoDrive(nomeMembro, mesIdx, statusCheck) {
+function renderTabelaControle() {
+    const container = document.getElementById('tabela-acompanhamento');
+    const mesesAbrev = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+    if (container) {
+        container.innerHTML = membros.filter(m => m.nivel !== 'Formação').map((m, idx) => {
+            const partes = m.nome.trim().split(' ');
+            const nomeExibicao = (['Marlene', 'Matheus'].includes(partes[0]) || partes.length === 1) 
+                ? partes[0] : `${partes[0]} ${partes[1]}`;
+
+            return `
+            <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 flex flex-col gap-5">
+                <div class="flex justify-between items-center">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="text-xl font-bold text-slate-900 tracking-tight leading-tight">${nomeExibicao}</h3>
+                        <span class="text-[9px] font-black uppercase tracking-[0.15em] text-slate-400">${m.nivel}</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-end">
+                        <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">TOTAL</span>
+                        <div class="flex items-baseline gap-1">
+                            <span id="total-${idx}" class="text-3xl font-black text-emerald-500 leading-none">0</span>
+                            <span class="text-xs font-bold text-slate-300">/12</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 mt-2">
+                    ${mesesAbrev.map((mes, i) => `
+                        <label class="relative h-12">
+                            <input type="checkbox" data-membro="${idx}" class="sr-only peer check-month" onchange="atualizarSoma(${idx})">
+                            <div class="absolute inset-0 rounded-2xl bg-slate-50 border-2 border-transparent 
+                                        peer-checked:bg-emerald-500 peer-checked:border-emerald-600 
+                                        transition-all duration-200 flex items-center justify-center shadow-sm">
+                                <span class="text-xs font-bold text-slate-400 peer-checked:text-white">${mes}</span>
+                            </div>
+                        </label>
+                    `).join('')}
+                </div>
+            </div>
+            `;
+        }).join('');
+    }
+}
+
+// 1. LÓGICA DE SOMA E DISPARO DE SALVAMENTO
+function atualizarSoma(idx) {
+    const checkboxes = document.querySelectorAll(`input[data-membro="${idx}"]`);
+    const totalSpan = document.getElementById(`total-${idx}`);
+    
+    const marcados = Array.from(checkboxes).filter(cb => cb.checked).length;
+    
+    if (totalSpan) totalSpan.innerText = marcados;
+
+    // Lógica de Salvamento no Google Drive
+    const evento = window.event;
+    if (evento && evento.target) {
         const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-        const mesPorExtenso = meses[mesIdx];
-        const dataAgora = new Date().toLocaleString('pt-BR');
+        const mesIndex = Array.from(checkboxes).indexOf(evento.target);
+        const nomeMembro = membros.filter(m => m.nivel !== 'Formação')[idx].nome;
+        salvarNoDrive(nomeMembro, meses[mesIndex], evento.target.checked);
+    }
+}
 
-        // Usando FormData para garantir a compatibilidade com o Google Script
-        const formData = new FormData();
-        formData.append('nome', nomeMembro);
-        formData.append('mes', mesPorExtenso);
-        formData.append('data', dataAgora);
-        formData.append('status', statusCheck);
+// 2. FUNÇÃO QUE ENVIA PARA A PLANILHA DO GOOGLE
+async function salvarNoDrive(nomeMembro, mesExtenso, statusCheck) {
+    const statusDiv = document.getElementById('status-save');
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRCvdS2YX-VcaGlZgq-m1GvOFjPlmj-LZo_6ejL1SEuyhFV2YCFBhy9ZCISHCqgQ5i/exec"; // <--- VERIFIQUE SE SUA URL ESTÁ AQUI
 
-        const statusDiv = document.getElementById('status-save');
+    const formData = new FormData();
+    formData.append('nome', nomeMembro);
+    formData.append('mes', mesExtenso);
+    formData.append('data', new Date().toLocaleString('pt-BR'));
+    formData.append('status', statusCheck ? "Marcado" : "Desmarcado");
+
+    if (statusDiv) {
         statusDiv.innerText = "⏳ SALVANDO...";
+        statusDiv.className = "text-[9px] font-black text-amber-600 uppercase tracking-widest mt-1";
+    }
 
-        try {
-            // Removido o 'no-cors' para permitir que o navegador siga o redirecionamento do Google
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: formData
-            });
+    try {
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors' // Google Apps Script exige no-cors para evitar erro de redirecionamento
+        });
+        
+        if (statusDiv) {
             statusDiv.innerText = "✅ SINCRONIZADO";
+            statusDiv.className = "text-[9px] font-black text-emerald-600 uppercase tracking-widest mt-1";
             setTimeout(() => statusDiv.innerText = "", 2000);
-        } catch (e) {
-            console.error("Erro ao salvar:", e);
-            statusDiv.innerText = "❌ ERRO AO SALVAR";
         }
+    } catch (e) {
+        if (statusDiv) {
+            statusDiv.innerText = "❌ ERRO DE CONEXÃO";
+            statusDiv.className = "text-[9px] font-black text-red-600 uppercase tracking-widest mt-1";
+        }
+        console.error("Erro ao salvar:", e);
+    }
 }
 
     function renderCelebracoes() {
