@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #1e293b; }
         .font-serif { font-family: 'Playfair Display', serif; }
@@ -35,6 +37,13 @@
         .banner-alerta { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.95; } }
         .hidden { display: none; }
+        
+        @keyframes bounceShort {
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        .animate-bounce-short { animation: bounceShort 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         /* Localize o final do seu <style> e insira isto: */
 
         .check-month {
@@ -109,16 +118,22 @@
 </head>
 <body class="pb-10">
 
-    <div id="alerta-hoje" class="bg-red-600 text-white p-4 shadow-lg banner-alerta relative">
-        <div class="max-w-5xl mx-auto flex items-center justify-center gap-4 pr-8 text-center">
-            <span class="text-3xl">🎉</span>
-            <div class="text-left">
-                <p class="text-[10px] font-black uppercase tracking-widest opacity-80">Hoje é dia de festa!</p>
-                <div id="detalhes-alerta" class="space-y-1"></div>
+    <div id="alerta-hoje" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white rounded-[3rem] w-full max-w-sm overflow-hidden shadow-2xl transform transition-all animate-bounce-short">
+            <div class="bg-red-600 p-8 text-center relative">
+                <span class="text-6xl mb-2 block">🎂</span>
+                <h2 class="font-serif text-3xl text-white">Parabéns!</h2>
+                <p class="text-red-100 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Aniversariante(s) do Dia</p>
             </div>
-            <span class="text-3xl">🎂</span>
+            <div class="p-8 text-center">
+                <div id="detalhes-alerta" class="space-y-4 mb-8">
+                    </div>
+                <button onclick="document.getElementById('alerta-hoje').style.display='none'" 
+                    class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-[10px] tracking-widest hover:bg-red-600 transition-colors">
+                    QUE DEUS ABENÇOE SEU DIA!
+                </button>
+            </div>
         </div>
-        <button onclick="document.getElementById('alerta-hoje').style.display='none'" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all">✕</button>
     </div>
 
     <header class="pt-12 pb-6 px-4 text-center">
@@ -642,12 +657,28 @@ async function salvarNoDrive(nomeMembro, mesExtenso, statusCheck) {
             }
         });
 
+        
+        // Localize este trecho dentro da função renderCelebracoes()
         const alertBox = document.getElementById('alerta-hoje');
         const detalhes = document.getElementById('detalhes-alerta');
+
         if(niversHojeInfo.length > 0) {
-            alertBox.style.display = 'block';
-            detalhes.innerHTML = niversHojeInfo.map(n => `<p class="font-bold text-sm leading-tight">${n.nome} <span class="font-normal opacity-80">(${n.tipo})</span></p>`).join('<div class="h-2"></div>');
-        } else { alertBox.style.display = 'none'; }
+            // Mudamos para 'flex' para o modal centralizar corretamente
+            alertBox.style.display = 'flex'; 
+            detalhes.innerHTML = niversHojeInfo.map(n => `
+                <div>
+                    <p class="text-xl font-bold text-slate-800 leading-tight">${n.nome}</p>
+                    <p class="text-xs text-red-600 font-medium">${n.tipo}</p>
+                </div>
+            `).join('');
+
+            if (!sessionStorage.getItem('confeteDisparado')) {
+                dispararConfetes();
+                sessionStorage.setItem('confeteDisparado', 'true');
+            }
+        } else { 
+            alertBox.style.display = 'none'; 
+        }
 
         nivers.sort((a,b) => a.dia - b.dia);
         casamentos.sort((a,b) => a.dia - b.dia);
@@ -673,7 +704,35 @@ async function salvarNoDrive(nomeMembro, mesExtenso, statusCheck) {
         document.getElementById('grid-formadoras').innerHTML = membros.filter(m => m.nivel === 'Formação').map(createCard).join('');
         renderCelebracoes();
         renderVigilia();
+        
     };
+
+    
+    function dispararConfetes() {
+        const duracao = 3 * 1000;
+        const fim = Date.now() + duracao;
+
+        (function frame() {
+            confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#b91c1c', '#f87171', '#ffffff']
+            });
+            confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#b91c1c', '#f87171', '#ffffff']
+            });
+
+            if (Date.now() < fim) {
+                requestAnimationFrame(frame);
+            }
+        }());
+    }
 </script>
 </body>
 </html>
